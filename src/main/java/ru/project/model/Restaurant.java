@@ -1,11 +1,23 @@
 package ru.project.model;
 
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "restaurant")
 public class Restaurant extends AbstractNamedEntity {
-    private User admin;
-    private List<Meal> menu;
 
+    @OneToOne
+    @JoinColumn(name = "admin_id")
+    private User admin;
+
+    @OneToMany
+    @JoinColumn(name = "restaurant_id")
+    private List<Meal> menu = new ArrayList<>();
+
+    public Restaurant() {
+    }
     public Restaurant(Integer id, String name) {
         super(id, name);
     }

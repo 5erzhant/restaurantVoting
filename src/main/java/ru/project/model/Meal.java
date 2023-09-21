@@ -1,11 +1,28 @@
 package ru.project.model;
 
-public class Meal extends AbstractNamedEntity {
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "meal")
+public class Meal extends AbstractBaseEntity {
+
+    @Column(name = "price")
     private Integer price;
+
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    @NotNull
     private Restaurant restaurant;
 
+    @Column(name = "description")
+    private String description;
+
+    public Meal() {
+    }
+
     public Meal(Integer id, String name, Integer price) {
-        super(id, name);
+        super(id);
         this.price = price;
     }
 
