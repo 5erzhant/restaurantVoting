@@ -1,5 +1,11 @@
-<html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<html lang="ru">
+<head>
+    <title>Выполните вход</title>
+</head>
 <body>
-<h2>Hello World!</h2>
+<a>Зарегистрироваться</a>
+</br>
+<a>Авторизоваться</a>
 </body>
 </html>
