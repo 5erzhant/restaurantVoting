@@ -7,9 +7,15 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Set;
 
+@NamedQueries({
+        @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id")
+})
+
 @Entity
 @Table(name = "users")
 public class User extends AbstractNamedEntity {
+
+    public static final String DELETE = "User.delete";
 
     @Column(name = "email", nullable = false, unique = true)
     @NotBlank
@@ -33,6 +39,10 @@ public class User extends AbstractNamedEntity {
     private Set<Role> roles;
 
     public User() {
+    }
+
+    public User (Date registered) {
+        this.registered = registered;
     }
 
 

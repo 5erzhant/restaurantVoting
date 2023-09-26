@@ -4,8 +4,15 @@
     <title>Выполните вход</title>
 </head>
 <body>
-<a>Зарегистрироваться</a>
-</br>
-<a>Авторизоваться</a>
+
+<form method="post" action="users">
+    <select name="userId">
+        <option value="100000">User</option>
+        <option value="100001">Admin</option>
+    </select>
+    <button type="submit">Авторизоваться</button>
+</form>
+
+<a href="users?action=create">Зарегистрироваться</a>
 </body>
 </html>
