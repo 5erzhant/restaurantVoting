@@ -4,8 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 @NamedQueries({
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id")
@@ -41,17 +40,21 @@ public class User extends AbstractNamedEntity {
     public User() {
     }
 
-    public User (Date registered) {
-        this.registered = registered;
-    }
-
-
     public User(Integer id, String name, String email, String password, Date registered, Set<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.registered = registered;
         this.roles = roles;
+    }
+
+    public User(String name, String email, String password) {
+        super(null, name);
+        this.email = email;
+        this.password = password;
+        this.registered = new Date();
+        this.roles = new HashSet<>();
+        setRoles(Role.USER);
     }
 
     public String getEmail() {
@@ -82,7 +85,7 @@ public class User extends AbstractNamedEntity {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRoles(Role role) {
+        this.roles.add(role);
     }
 }

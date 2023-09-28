@@ -8,6 +8,7 @@
 <body>
 <jsp:useBean id="user" type="ru.project.model.User" scope="request"/>
 <form method="post" action="users">
+    <input type="hidden" name="id" value="${user.id}">
     <dl>
         <dt>Имя</dt>
         <dd><input type="text" value="${user.name}" name="name" required></dd>
@@ -20,6 +21,8 @@
         <dt>Пароль</dt>
         <dd><input type="text" value="${user.password}" name="password" required></dd>
     </dl>
+    <button type="submit">Сохранить</button>
+    <button onclick="window.history.back()" type="button">Отменить</button>
 </form>
 </body>
 </html>
