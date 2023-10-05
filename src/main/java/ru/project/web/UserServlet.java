@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Objects;
 
 public class UserServlet extends HttpServlet {
 
@@ -35,12 +34,12 @@ public class UserServlet extends HttpServlet {
         String action = request.getParameter("action");
         switch (action) {
             case "create", "update" -> {
-                User user = "create".equals(action) ? new User() : userController.get(getId(request));
+                User user = "create".equals(action) ? new User() : userController.get(SecurityUtil.authUserId());
                 request.setAttribute("user", user);
                 request.getRequestDispatcher("/userForm.jsp").forward(request, response);
             }
             case "delete" -> {
-                userController.delete(getId(request));
+                userController.delete();
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
             }
         }
@@ -52,20 +51,20 @@ public class UserServlet extends HttpServlet {
         String userId = request.getParameter("userId");
         User user;
         if (StringUtils.hasLength(userId)) {
+            SecurityUtil.setAuthUserId(Integer.parseInt(userId));
             user = userController.get(Integer.parseInt(userId));
-            request.setAttribute("user", userController.get(Integer.parseInt(userId)));
         } else {
             user = new User(
                     request.getParameter("name"),
                     request.getParameter("email"),
                     request.getParameter("password"));
-            request.setAttribute("user", userController.create(user));
+            if (StringUtils.hasLength(request.getParameter("id"))) {
+                userController.update(user);
+            } else {
+                SecurityUtil.setAuthUserId(userController.create(user).getId());
+            }
         }
+        request.setAttribute("user", user);
         request.getRequestDispatcher("/userPage.jsp").forward(request, response);
-    }
-
-    private int getId(HttpServletRequest request) {
-        String paramId = Objects.requireNonNull(request.getParameter("id"));
-        return Integer.parseInt(paramId);
     }
 }
