@@ -41,7 +41,7 @@ public class RestaurantServlet extends HttpServlet {
                 request.setAttribute("restaurant", restaurant);
             }
         }
-        request.getRequestDispatcher("/restaurantForm.jsp").forward(request, response);
+        request.getRequestDispatcher("/restaurant/restaurantForm.jsp").forward(request, response);
     }
 
     @Override
@@ -51,8 +51,7 @@ public class RestaurantServlet extends HttpServlet {
         Meal meal = new Meal(request.getParameter("description"),
                 Integer.valueOf(request.getParameter("price")));
         mealController.create(meal, restaurant.getId());
-        request.getRequestDispatcher("/userPage.jsp").forward(request, response);
-
+        response.sendRedirect("/users");
     }
 
     private int getId(HttpServletRequest request) {

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -10,5 +11,22 @@
 <a href="users?action=delete">Удалить профиль</a><br>
 <a href="restaurants?action=create">Создать ресторан</a><br>
 <a href="restaurants?action=all">Выбрать ресторан</a><br>
+<br/>
+<table>
+    <thead>
+    <tr>Ваши рестораны</tr>
+    </thead>
+    <tbody>
+    <c:forEach var="restaurant" items="${user.restaurants}">
+        <jsp:useBean id="restaurant" type="ru.project.model.Restaurant"/>
+        <tr>
+            <td>${restaurant.name}</td>
+            <td><a href="restaurants?action=update">Редактировать</a></td>
+            <td><a href="restaurants?action=delete">Удалить</a></td>
+        </tr>
+    </c:forEach>
+
+    </tbody>
+</table>
 </body>
 </html>

@@ -37,8 +37,8 @@ public class User extends AbstractNamedEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "admin")
-    private List<Restaurant> restaurantList;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "admin")
+    private List<Restaurant> restaurants;
 
     public User() {
     }
@@ -90,11 +90,11 @@ public class User extends AbstractNamedEntity {
         this.roles.add(role);
     }
 
-    public List<Restaurant> getRestaurantList() {
-        return restaurantList;
+    public List<Restaurant> getRestaurants() {
+        return restaurants;
     }
 
-    public void setRestaurantList(List<Restaurant> restaurantList) {
-        this.restaurantList = restaurantList;
+    public void setRestaurants(List<Restaurant> restaurants) {
+        this.restaurants = restaurants;
     }
 }

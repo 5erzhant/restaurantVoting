@@ -33,21 +33,28 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        switch (action) {
+        User user;
+        switch (action == null ? "admin" : action) {
             case "create", "update" -> {
-                User user = "create".equals(action) ? new User() : userController.get(SecurityUtil.authUserId());
+                user = "create".equals(action) ? new User() : userController.get(SecurityUtil.authUserId());
                 request.setAttribute("user", user);
-                request.getRequestDispatcher("/userForm.jsp").forward(request, response);
+                request.getRequestDispatcher("/user/userForm.jsp").forward(request, response);
             }
             case "delete" -> {
                 userController.delete();
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
+                response.sendRedirect("/");
+            }
+            default -> {
+                user = userController.get(SecurityUtil.authUserId());
+                request.setAttribute("user", user);
+                request.getRequestDispatcher("/user/userPage.jsp").forward(request, response);
             }
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String userId = request.getParameter("userId");
         String id = request.getParameter("id");
@@ -63,12 +70,13 @@ public class UserServlet extends HttpServlet {
             if (StringUtils.hasLength(id)) {
                 user.setId(Integer.valueOf(id));
                 user.setRegistered(getDate(request.getParameter("registered")));
+                user.setRestaurants(userController.get(SecurityUtil.authUserId()).getRestaurants());
                 userController.update(user);
             } else {
                 SecurityUtil.setAuthUserId(userController.create(user).getId());
             }
         }
         request.setAttribute("user", user);
-        request.getRequestDispatcher("/userPage.jsp").forward(request, response);
+        request.getRequestDispatcher("/user/userPage.jsp").forward(request, response);
     }
 }
