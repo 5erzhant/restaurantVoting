@@ -16,6 +16,7 @@ public abstract class AbstractBaseEntity {
     }
 
     public AbstractBaseEntity(Integer id) {
+        this.id = id;
     }
 
     public Integer getId() {

@@ -14,4 +14,13 @@
         <url-pattern>/users</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>restaurantServlet</servlet-name>
+        <servlet-class>ru.project.web.RestaurantServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>restaurantServlet</servlet-name>
+        <url-pattern>/restaurants</url-pattern>
+    </servlet-mapping>
+
 </web-app>

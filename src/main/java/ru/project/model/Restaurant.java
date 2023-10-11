@@ -1,25 +1,26 @@
 package ru.project.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 @Table(name = "restaurant")
 public class Restaurant extends AbstractNamedEntity {
 
-    @OneToOne
-    @JoinColumn(name = "admin_id")
+    @ManyToOne
+    @JoinColumn(name = "admin_id", nullable = false)
     private User admin;
 
-    @OneToMany
-    @JoinColumn(name = "restaurant_id")
-    private List<Meal> menu = new ArrayList<>();
 
     public Restaurant() {
     }
+
     public Restaurant(Integer id, String name) {
         super(id, name);
+    }
+
+    public Restaurant(String name) {
+        this(null, name);
     }
 
     public User getAdmin() {
@@ -30,11 +31,11 @@ public class Restaurant extends AbstractNamedEntity {
         this.admin = admin;
     }
 
-    public List<Meal> getMenu() {
-        return menu;
-    }
-
-    public void setMenu(List<Meal> menu) {
-        this.menu = menu;
-    }
+//    public List<Meal> getMenu() {
+//        return menu;
+//    }
+//
+//    public void setMenu(List<Meal> menu) {
+//        this.menu = menu;
+//    }
 }

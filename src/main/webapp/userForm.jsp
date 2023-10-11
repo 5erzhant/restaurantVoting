@@ -9,6 +9,7 @@
 <jsp:useBean id="user" type="ru.project.model.User" scope="request"/>
 <form method="post" action="users">
     <input type="hidden" name="id" value="${user.id}">
+    <input type="hidden" name="registered" value="${user.registered}">
     <dl>
         <dt>Имя</dt>
         <dd><input type="text" value="${user.name}" name="name" required></dd>

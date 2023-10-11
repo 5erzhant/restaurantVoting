@@ -21,9 +21,18 @@ public class Meal extends AbstractBaseEntity {
     public Meal() {
     }
 
-    public Meal(Integer id, String name, Integer price) {
-        super(id);
+    public Meal(String description, Integer price) {
+        super(null);
         this.price = price;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getPrice() {

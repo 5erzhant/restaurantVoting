@@ -1,7 +1,6 @@
 package ru.project.web;
 
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
 import ru.project.model.User;
 import ru.project.web.user.UserController;
@@ -12,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static ru.project.util.DateUtil.getDate;
+
 public class UserServlet extends HttpServlet {
 
     private ConfigurableApplicationContext springContext;
@@ -19,7 +20,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     public void init() {
-        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
+        springContext = SpringContext.getContext();
         userController = springContext.getBean(UserController.class);
     }
 
@@ -49,16 +50,19 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String userId = request.getParameter("userId");
+        String id = request.getParameter("id");
         User user;
         if (StringUtils.hasLength(userId)) {
             SecurityUtil.setAuthUserId(Integer.parseInt(userId));
-            user = userController.get(Integer.parseInt(userId));
+            user = userController.get(SecurityUtil.authUserId());
         } else {
             user = new User(
                     request.getParameter("name"),
                     request.getParameter("email"),
                     request.getParameter("password"));
-            if (StringUtils.hasLength(request.getParameter("id"))) {
+            if (StringUtils.hasLength(id)) {
+                user.setId(Integer.valueOf(id));
+                user.setRegistered(getDate(request.getParameter("registered")));
                 userController.update(user);
             } else {
                 SecurityUtil.setAuthUserId(userController.create(user).getId());
