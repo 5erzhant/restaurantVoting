@@ -12,7 +12,6 @@ import ru.project.web.SecurityUtil;
 public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(User.class);
-
     private final UserRepository repository;
 
     @Autowired

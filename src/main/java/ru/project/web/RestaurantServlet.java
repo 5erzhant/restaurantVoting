@@ -1,6 +1,7 @@
 package ru.project.web;
 
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.util.StringUtils;
 import ru.project.model.Meal;
 import ru.project.model.Restaurant;
 import ru.project.web.meal.MealController;
@@ -47,10 +48,28 @@ public class RestaurantServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        Restaurant restaurant = restaurantController.create(new Restaurant(request.getParameter("name")));
-        Meal meal = new Meal(request.getParameter("description"),
-                Integer.valueOf(request.getParameter("price")));
-        mealController.create(meal, restaurant.getId());
+        String newDescription = request.getParameter("description");
+        String newPrice = request.getParameter("price");
+        String restaurantId = request.getParameter("id");
+        Restaurant restaurant;
+        if (!StringUtils.hasLength(restaurantId)) {
+            restaurant = restaurantController.create(new Restaurant(request.getParameter("name")));
+        } else {
+            restaurant = restaurantController.get(Integer.parseInt(restaurantId));
+            for (Meal meal : restaurant.getMealList()) {
+                String mealId = request.getParameter("mealId" + "_" + meal.getId());
+                String description = request.getParameter("description" + "_" + mealId);
+                String price = request.getParameter("price" + "_" + mealId);
+                meal.setDescription(description);
+                meal.setPrice(Integer.valueOf(price));
+            }
+            restaurantController.update(restaurant);
+        }
+
+        if (StringUtils.hasLength(newDescription) & StringUtils.hasLength(newPrice)) {
+            Meal meal = new Meal(newDescription, Integer.valueOf(newPrice));
+            mealController.create(meal, restaurant.getId());
+        }
         response.sendRedirect("/users");
     }
 

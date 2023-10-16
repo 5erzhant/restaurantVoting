@@ -21,8 +21,8 @@
         <jsp:useBean id="restaurant" type="ru.project.model.Restaurant"/>
         <tr>
             <td>${restaurant.name}</td>
-            <td><a href="restaurants?action=update">Редактировать</a></td>
-            <td><a href="restaurants?action=delete">Удалить</a></td>
+            <td><a href="restaurants?action=update&id=${restaurant.id}">Редактировать</a></td>
+            <td><a href="restaurants?action=delete&id=${restaurant.id}">Удалить</a></td>
         </tr>
     </c:forEach>
 

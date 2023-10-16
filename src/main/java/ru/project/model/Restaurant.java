@@ -1,6 +1,7 @@
 package ru.project.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 
 @Entity
@@ -11,6 +12,8 @@ public class Restaurant extends AbstractNamedEntity {
     @JoinColumn(name = "admin_id", nullable = false)
     private User admin;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
+    private Set<Meal> mealList;
 
     public Restaurant() {
     }
@@ -31,11 +34,11 @@ public class Restaurant extends AbstractNamedEntity {
         this.admin = admin;
     }
 
-//    public List<Meal> getMenu() {
-//        return menu;
-//    }
-//
-//    public void setMenu(List<Meal> menu) {
-//        this.menu = menu;
-//    }
+    public Set<Meal> getMealList() {
+        return mealList;
+    }
+
+    public void setMealList(Set<Meal> mealList) {
+        this.mealList = mealList;
+    }
 }
