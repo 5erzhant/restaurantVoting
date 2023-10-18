@@ -40,9 +40,13 @@ public class RestaurantServlet extends HttpServlet {
                 Restaurant restaurant = "create".equals(action) ? new Restaurant() :
                         restaurantController.get(getId(request));
                 request.setAttribute("restaurant", restaurant);
+                request.getRequestDispatcher("/restaurant/restaurantForm.jsp").forward(request, response);
+            }
+            case "delete" -> {
+                restaurantController.delete(getId(request));
+                response.sendRedirect("users");
             }
         }
-        request.getRequestDispatcher("/restaurant/restaurantForm.jsp").forward(request, response);
     }
 
     @Override
@@ -70,7 +74,7 @@ public class RestaurantServlet extends HttpServlet {
             Meal meal = new Meal(newDescription, Integer.valueOf(newPrice));
             mealController.create(meal, restaurant.getId());
         }
-        response.sendRedirect("/users");
+        response.sendRedirect("users");
     }
 
     private int getId(HttpServletRequest request) {

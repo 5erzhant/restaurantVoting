@@ -8,6 +8,7 @@ import ru.project.repository.RestaurantRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -33,8 +34,10 @@ public class JpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(int id) {
-        return false;
+        Query query = em.createQuery("DELETE FROM Restaurant r WHERE r.id=:id");
+        return query.setParameter("id", id).executeUpdate() != 0;
     }
 
     @Override

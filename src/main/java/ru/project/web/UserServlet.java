@@ -34,7 +34,7 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         User user;
-        switch (action == null ? "admin" : action) {
+        switch (action == null ? "profile" : action) {
             case "create", "update" -> {
                 user = "create".equals(action) ? new User() : userController.get(SecurityUtil.authUserId());
                 request.setAttribute("user", user);

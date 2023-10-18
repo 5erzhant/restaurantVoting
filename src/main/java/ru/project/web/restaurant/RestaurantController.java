@@ -32,4 +32,9 @@ public class RestaurantController {
         log.info("get {}", id);
         return repository.get(SecurityUtil.authUserId(), id);
     }
+
+    public void delete(int restaurantId) {
+        log.info("delete {}", restaurantId);
+        repository.delete(restaurantId);
+    }
 }
