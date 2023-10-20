@@ -12,14 +12,19 @@
         <dd><input type="text" value="${restaurant.name}" name="name" required></dd>
     </dl>
     <dl>
-        <c:forEach var="meal" items="${restaurant.mealList}">
-            <jsp:useBean id="meal" type="ru.project.model.Meal"/>
-            <input type="hidden" name="mealId_${meal.id}" value="${meal.id}">
-            <dt>Блюдо</dt>
-            <dd><input type="text" name="description_${meal.id}" value="${meal.description}" required></dd>
-            <dt>Цена</dt>
-            <dd><input type="number" name="price_${meal.id}" value="${meal.price}" required></dd>
-        </c:forEach>
+        <c:if test="${restaurant.id != null}">
+            <jsp:useBean id="currentMeals" scope="request" type="java.util.List"/>
+            <c:forEach var="meal" items="${currentMeals}">
+                <jsp:useBean id="meal" type="ru.project.model.Meal"/>
+                <input type="hidden" name="mealId_${meal.id}" value="${meal.id}">
+                <dt>Блюдо</dt>
+                <dd><input type="text" name="description_${meal.id}" value="${meal.description}" required></dd>
+                <dt>Цена</dt>
+                <dd><input type="number" name="price_${meal.id}" value="${meal.price}" required></dd>
+                <input type="checkbox" id="check" name="check_${meal.id}">
+                <label for="check">Убрать из меню</label>
+            </c:forEach>
+        </c:if>
     </dl>
     <dl>
         <dt>Блюдо</dt>

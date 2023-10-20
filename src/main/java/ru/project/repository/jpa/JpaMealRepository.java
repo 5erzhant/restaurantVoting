@@ -34,11 +34,13 @@ public class JpaMealRepository implements MealRepository {
 
     @Override
     public Meal get(int id, int restaurantId) {
-        return null;
+        return em.find(Meal.class, id);
     }
 
     @Override
-    public List<Meal> getAll() {
-        return null;
+    public List<Meal> getCurrentMeals(int restaurantId) {
+        return em.createQuery("SELECT m FROM Meal m WHERE m.isCurrent=TRUE AND m.restaurant.id=:restaurantId")
+                .setParameter("restaurantId", restaurantId)
+                .getResultList();
     }
 }

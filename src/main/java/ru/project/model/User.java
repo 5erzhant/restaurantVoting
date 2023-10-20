@@ -56,6 +56,7 @@ public class User extends AbstractNamedEntity {
         super(id, name);
         this.email = email;
         this.password = password;
+        this.restaurants = new HashSet<>();
     }
 
     public String getEmail() {

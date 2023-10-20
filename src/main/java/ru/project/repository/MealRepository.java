@@ -11,5 +11,5 @@ public interface MealRepository {
 
     Meal get(int id, int restaurantId);
 
-    List<Meal> getAll();
+    List<Meal> getCurrentMeals(int restaurantId);
 }

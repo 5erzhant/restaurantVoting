@@ -8,7 +8,7 @@ import java.util.Set;
 @Table(name = "restaurant")
 public class Restaurant extends AbstractNamedEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id", nullable = false)
     private User admin;
 

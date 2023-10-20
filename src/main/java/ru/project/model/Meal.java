@@ -18,6 +18,9 @@ public class Meal extends AbstractBaseEntity {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "is_current")
+    private boolean isCurrent = true;
+
     public Meal() {
     }
 
@@ -49,5 +52,13 @@ public class Meal extends AbstractBaseEntity {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public boolean isCurrent() {
+        return isCurrent;
+    }
+
+    public void setCurrent(boolean current) {
+        isCurrent = current;
     }
 }
