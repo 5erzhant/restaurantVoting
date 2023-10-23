@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller;
 import ru.project.model.Meal;
 import ru.project.repository.MealRepository;
 
-import java.util.List;
-
 @Controller
 public class MealController {
     private static final Logger log = LoggerFactory.getLogger(Meal.class);
@@ -33,10 +31,5 @@ public class MealController {
     public Meal get(int mealId, int restaurantId) {
         log.info("get meal {}", mealId);
         return mealRepository.get(mealId, restaurantId);
-    }
-
-    public List<Meal> getCurrentMeals(int restaurantId) {
-        log.info("get current meal list");
-        return mealRepository.getCurrentMeals(restaurantId);
     }
 }

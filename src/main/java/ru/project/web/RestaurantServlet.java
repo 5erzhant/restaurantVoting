@@ -4,6 +4,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.StringUtils;
 import ru.project.model.Meal;
 import ru.project.model.Restaurant;
+import ru.project.util.MealsUtil;
 import ru.project.web.meal.MealController;
 import ru.project.web.restaurant.RestaurantController;
 
@@ -12,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -44,7 +44,10 @@ public class RestaurantServlet extends HttpServlet {
                     restaurant = new Restaurant();
                 } else {
                     restaurant = restaurantController.get(getId(request));
-                    request.setAttribute("currentMeals", mealController.getCurrentMeals(restaurant.getId()));
+                    request.setAttribute("currentMeals", MealsUtil.getFilteredMeals(restaurant.getMealList(),
+                            Meal::isCurrent));
+                    request.setAttribute("otherMeals", MealsUtil.getFilteredMeals(restaurant.getMealList(),
+                            meal -> !meal.isCurrent()));
                 }
                 request.setAttribute("restaurant", restaurant);
                 request.getRequestDispatcher("/restaurant/restaurantForm.jsp").forward(request, response);
@@ -60,6 +63,7 @@ public class RestaurantServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String newDescription = request.getParameter("description");
+        String otherMeal = request.getParameter("otherMeal");
         String newPrice = request.getParameter("price");
         String restaurantId = request.getParameter("id");
         Restaurant restaurant;
@@ -67,8 +71,7 @@ public class RestaurantServlet extends HttpServlet {
             restaurant = restaurantController.create(new Restaurant(request.getParameter("name")));
         } else {
             restaurant = restaurantController.get(Integer.parseInt(restaurantId));
-            List<Meal> currentMeals = mealController.getCurrentMeals(Integer.parseInt(restaurantId));
-            for (Meal meal : currentMeals) {
+            for (Meal meal : MealsUtil.getFilteredMeals(restaurant.getMealList(), Meal::isCurrent)) {
                 String mealId = request.getParameter("mealId" + "_" + meal.getId());
                 String description = request.getParameter("description" + "_" + mealId);
                 String price = request.getParameter("price" + "_" + mealId);
@@ -85,6 +88,11 @@ public class RestaurantServlet extends HttpServlet {
         if (StringUtils.hasLength(newDescription) & StringUtils.hasLength(newPrice)) {
             Meal meal = new Meal(newDescription, Integer.valueOf(newPrice));
             mealController.create(meal, restaurant.getId());
+        }
+        if (StringUtils.hasLength(otherMeal)) {
+            Meal meal = mealController.get(Integer.parseInt(otherMeal), Integer.parseInt(restaurantId));
+            meal.setCurrent(true);
+            mealController.update(meal, Integer.parseInt(restaurantId));
         }
         response.sendRedirect("users");
     }

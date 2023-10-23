@@ -8,7 +8,6 @@ import ru.project.repository.MealRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
 
 @Repository
 public class JpaMealRepository implements MealRepository {
@@ -37,10 +36,4 @@ public class JpaMealRepository implements MealRepository {
         return em.find(Meal.class, id);
     }
 
-    @Override
-    public List<Meal> getCurrentMeals(int restaurantId) {
-        return em.createQuery("SELECT m FROM Meal m WHERE m.isCurrent=TRUE AND m.restaurant.id=:restaurantId")
-                .setParameter("restaurantId", restaurantId)
-                .getResultList();
-    }
 }

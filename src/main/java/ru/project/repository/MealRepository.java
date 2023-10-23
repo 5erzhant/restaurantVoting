@@ -2,8 +2,6 @@ package ru.project.repository;
 
 import ru.project.model.Meal;
 
-import java.util.List;
-
 public interface MealRepository {
     Meal save(Meal Meal, int restaurantId);
 
@@ -11,5 +9,4 @@ public interface MealRepository {
 
     Meal get(int id, int restaurantId);
 
-    List<Meal> getCurrentMeals(int restaurantId);
 }
