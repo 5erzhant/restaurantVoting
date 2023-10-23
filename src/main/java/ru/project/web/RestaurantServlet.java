@@ -56,6 +56,13 @@ public class RestaurantServlet extends HttpServlet {
                 restaurantController.delete(getId(request));
                 response.sendRedirect("users");
             }
+            case "all" -> {
+                request.setAttribute("restaurants", restaurantController.getAll());
+                request.getRequestDispatcher("restaurant/restaurantsVoting.jsp").forward(request,response);
+            }
+            case "vote" -> {
+
+            }
         }
     }
 

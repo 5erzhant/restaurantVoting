@@ -9,7 +9,8 @@ import ru.project.repository.RestaurantRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Repository
 @Transactional(readOnly = true)
@@ -41,8 +42,8 @@ public class JpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-    public List<Restaurant> getAll() {
-        return null;
-    }
+    public Set<Restaurant> getAll() {
+        return new HashSet<>(em.createQuery("SELECT r FROM Restaurant r").getResultList());
 
+    }
 }

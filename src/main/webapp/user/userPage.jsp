@@ -12,21 +12,22 @@
 <a href="restaurants?action=create">Создать ресторан</a><br>
 <a href="restaurants?action=all">Выбрать ресторан</a><br>
 <br/>
-<table>
-    <thead>
-    <tr>Ваши рестораны</tr>
-    </thead>
-    <tbody>
-    <c:forEach var="restaurant" items="${user.restaurants}">
-        <jsp:useBean id="restaurant" type="ru.project.model.Restaurant"/>
-        <tr>
-            <td>${restaurant.name}</td>
-            <td><a href="restaurants?action=update&id=${restaurant.id}">Редактировать</a></td>
-            <td><a href="restaurants?action=delete&id=${restaurant.id}">Удалить</a></td>
-        </tr>
-    </c:forEach>
-
-    </tbody>
-</table>
+<c:if test="${user.restaurants.size()!=0}">
+    <table>
+        <thead>
+        <tr>Ваши рестораны</tr>
+        </thead>
+        <tbody>
+        <c:forEach var="restaurant" items="${user.restaurants}">
+            <jsp:useBean id="restaurant" type="ru.project.model.Restaurant"/>
+            <tr>
+                <td>${restaurant.name}</td>
+                <td><a href="restaurants?action=update&id=${restaurant.id}">Редактировать</a></td>
+                <td><a href="restaurants?action=delete&id=${restaurant.id}">Удалить</a></td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</c:if>
 </body>
 </html>

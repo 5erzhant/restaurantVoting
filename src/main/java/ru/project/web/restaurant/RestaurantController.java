@@ -8,6 +8,8 @@ import ru.project.model.Restaurant;
 import ru.project.repository.RestaurantRepository;
 import ru.project.web.SecurityUtil;
 
+import java.util.Set;
+
 @Controller
 public class RestaurantController {
     private static final Logger log = LoggerFactory.getLogger(Restaurant.class);
@@ -36,5 +38,10 @@ public class RestaurantController {
     public void delete(int restaurantId) {
         log.info("delete {}", restaurantId);
         repository.delete(restaurantId);
+    }
+
+    public Set<Restaurant> getAll() {
+        log.info("get all restaurants");
+        return repository.getAll();
     }
 }
