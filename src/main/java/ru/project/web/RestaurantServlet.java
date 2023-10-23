@@ -44,9 +44,11 @@ public class RestaurantServlet extends HttpServlet {
                     restaurant = new Restaurant();
                 } else {
                     restaurant = restaurantController.get(getId(request));
-                    request.setAttribute("currentMeals", MealsUtil.getFilteredMeals(restaurant.getMealList(),
+                    request.setAttribute("currentMeals", MealsUtil.getFilteredMeals(mealController
+                                    .getAll(restaurant.getId()),
                             Meal::isCurrent));
-                    request.setAttribute("otherMeals", MealsUtil.getFilteredMeals(restaurant.getMealList(),
+                    request.setAttribute("otherMeals", MealsUtil.getFilteredMeals(mealController
+                                    .getAll(restaurant.getId()),
                             meal -> !meal.isCurrent()));
                 }
                 request.setAttribute("restaurant", restaurant);
@@ -78,7 +80,7 @@ public class RestaurantServlet extends HttpServlet {
             restaurant = restaurantController.create(new Restaurant(request.getParameter("name")));
         } else {
             restaurant = restaurantController.get(Integer.parseInt(restaurantId));
-            for (Meal meal : MealsUtil.getFilteredMeals(restaurant.getMealList(), Meal::isCurrent)) {
+            for (Meal meal : MealsUtil.getFilteredMeals(mealController.getAll(restaurant.getId()), Meal::isCurrent)) {
                 String mealId = request.getParameter("mealId" + "_" + meal.getId());
                 String description = request.getParameter("description" + "_" + mealId);
                 String price = request.getParameter("price" + "_" + mealId);

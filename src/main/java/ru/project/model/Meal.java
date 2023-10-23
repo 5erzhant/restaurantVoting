@@ -10,7 +10,7 @@ public class Meal extends AbstractBaseEntity {
     @Column(name = "price")
     private Integer price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
     private Restaurant restaurant;

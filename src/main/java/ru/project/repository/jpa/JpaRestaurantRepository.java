@@ -8,9 +8,7 @@ import ru.project.repository.RestaurantRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
@@ -36,14 +34,23 @@ public class JpaRestaurantRepository implements RestaurantRepository {
 
     @Override
     @Transactional
-    public boolean delete(int id) {
-        Query query = em.createQuery("DELETE FROM Restaurant r WHERE r.id=:id");
-        return query.setParameter("id", id).executeUpdate() != 0;
+    public boolean delete(int adminId, int id) {
+        return em.createNamedQuery(Restaurant.DELETE).setParameter("id", id)
+                .setParameter("adminId", adminId)
+                .executeUpdate() != 0;
     }
 
     @Override
-    public Set<Restaurant> getAll() {
-        return new HashSet<>(em.createQuery("SELECT r FROM Restaurant r").getResultList());
+    public List<Restaurant> getRestaurants(int userId) {
+        return em.createNamedQuery(Restaurant.USERS_RESTAURANTS)
+                .setParameter("adminId", userId)
+                .getResultList();
+    }
+
+
+    @Override
+    public List<Restaurant> getAll() {
+        return em.createNamedQuery(Restaurant.GET_ALL).getResultList();
 
     }
 }

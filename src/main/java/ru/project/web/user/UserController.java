@@ -25,13 +25,13 @@ public class UserController {
     }
 
     public User get(int id) {
-        log.info("get {}", id);
+        log.info("get user {}", id);
         return repository.get(id);
     }
 
     public void delete() {
         int id = SecurityUtil.authUserId();
-        log.info("delete {}", id);
+        log.info("delete user {}", id);
         repository.delete(id);
     }
 

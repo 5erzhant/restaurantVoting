@@ -37,9 +37,6 @@ public class User extends AbstractNamedEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "admin")
-    private Set<Restaurant> restaurants;
-
     public User() {
     }
 
@@ -56,7 +53,6 @@ public class User extends AbstractNamedEntity {
         super(id, name);
         this.email = email;
         this.password = password;
-        this.restaurants = new HashSet<>();
     }
 
     public String getEmail() {
@@ -91,11 +87,4 @@ public class User extends AbstractNamedEntity {
         this.roles.add(role);
     }
 
-    public Set<Restaurant> getRestaurants() {
-        return restaurants;
-    }
-
-    public void setRestaurants(Set<Restaurant> restaurants) {
-        this.restaurants = restaurants;
-    }
 }

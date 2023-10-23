@@ -7,29 +7,36 @@ import org.springframework.stereotype.Controller;
 import ru.project.model.Meal;
 import ru.project.repository.MealRepository;
 
+import java.util.List;
+
 @Controller
 public class MealController {
     private static final Logger log = LoggerFactory.getLogger(Meal.class);
-    MealRepository mealRepository;
+    MealRepository repository;
 
     @Autowired
-    public MealController(MealRepository mealRepository) {
-        this.mealRepository = mealRepository;
+    public MealController(MealRepository repository) {
+        this.repository = repository;
     }
 
     public void create(Meal meal, int restaurantId) {
         log.info("create meal {}", meal);
-        mealRepository.save(meal, restaurantId);
+        repository.save(meal, restaurantId);
 
     }
 
     public void update(Meal meal, int restaurantId) {
         log.info("update meal {}", meal);
-        mealRepository.save(meal, restaurantId);
+        repository.save(meal, restaurantId);
     }
 
     public Meal get(int mealId, int restaurantId) {
         log.info("get meal {}", mealId);
-        return mealRepository.get(mealId, restaurantId);
+        return repository.get(mealId, restaurantId);
+    }
+
+    public List<Meal> getAll(int restaurantId) {
+        log.info("get restaurant {} meal", restaurantId);
+        return repository.getAll(restaurantId);
     }
 }

@@ -8,7 +8,7 @@ import ru.project.model.Restaurant;
 import ru.project.repository.RestaurantRepository;
 import ru.project.web.SecurityUtil;
 
-import java.util.Set;
+import java.util.List;
 
 @Controller
 public class RestaurantController {
@@ -31,17 +31,22 @@ public class RestaurantController {
     }
 
     public Restaurant get(int id) {
-        log.info("get {}", id);
+        log.info("get restaurant {}", id);
         return repository.get(SecurityUtil.authUserId(), id);
     }
 
-    public void delete(int restaurantId) {
-        log.info("delete {}", restaurantId);
-        repository.delete(restaurantId);
+    public void delete(int id) {
+        log.info("delete restaurant {}", id);
+        repository.delete(SecurityUtil.authUserId(), id);
     }
 
-    public Set<Restaurant> getAll() {
+    public List<Restaurant> getAll() {
         log.info("get all restaurants");
         return repository.getAll();
+    }
+
+    public List<Restaurant> getRestaurants(int userId) {
+        log.info("get user's {} restaurants", userId);
+        return repository.getRestaurants(userId);
     }
 }

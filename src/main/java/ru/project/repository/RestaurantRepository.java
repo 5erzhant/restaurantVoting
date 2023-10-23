@@ -2,14 +2,16 @@ package ru.project.repository;
 
 import ru.project.model.Restaurant;
 
-import java.util.Set;
+import java.util.List;
 
 public interface RestaurantRepository {
     Restaurant save(Restaurant restaurant, int userId);
 
-    boolean delete(int id);
+    boolean delete(int id, int restaurantId);
 
-    Set<Restaurant> getAll();
+    List<Restaurant> getRestaurants(int userId);
+
+    List<Restaurant> getAll();
 
     Restaurant get(int authUserId, int id);
 }
