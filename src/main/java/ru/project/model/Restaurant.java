@@ -1,11 +1,12 @@
 package ru.project.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NamedQueries({
         @NamedQuery(name = Restaurant.USERS_RESTAURANTS, query = "SELECT r FROM Restaurant r WHERE r.admin.id=:adminId " +
                 "ORDER BY r.name"),
-        @NamedQuery(name = Restaurant.GET_ALL, query = "SELECT r FROM Restaurant r ORDER BY r.name"),
+        @NamedQuery(name = Restaurant.GET_ALL, query = "SELECT DISTINCT r FROM Restaurant r LEFT OUTER JOIN FETCH r.meals ORDER BY r.name"),
         @NamedQuery(name = Restaurant.DELETE, query = "DELETE FROM Restaurant r WHERE r.id=:id AND r.admin.id=:adminId")})
 
 @Entity
@@ -18,6 +19,9 @@ public class Restaurant extends AbstractNamedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id", nullable = false)
     private User admin;
+
+    @OneToMany(mappedBy = "restaurant")
+    public List<Meal> meals;
 
     public Restaurant() {
     }
@@ -36,5 +40,13 @@ public class Restaurant extends AbstractNamedEntity {
 
     public void setAdmin(User admin) {
         this.admin = admin;
+    }
+
+    public List<Meal> getMeals() {
+        return meals;
+    }
+
+    public void setMeals(List<Meal> meals) {
+        this.meals = meals;
     }
 }

@@ -16,14 +16,14 @@
     </tr>
     </thead>
     <tbody>
-    <jsp:useBean id="restaurants" scope="request" type="java.util.Set"/>
+    <jsp:useBean id="restaurants" scope="request" type="java.util.List"/>
     <c:forEach items="${restaurants}" var="restaurant">
         <jsp:useBean id="restaurant" type="ru.project.model.Restaurant"/>
         <tr>
             <td>${restaurant.name}</td>
             <td>
                 <select name="select">
-                    <c:forEach items="${restaurant.mealList}" var="meal">
+                    <c:forEach items="${restaurant.meals}" var="meal">
                         <c:if test="${meal.current==true}">
                             <option>${meal.description} - ${meal.price} рублей</option>
                         </c:if>

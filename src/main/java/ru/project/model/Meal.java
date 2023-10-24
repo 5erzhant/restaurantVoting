@@ -3,9 +3,12 @@ package ru.project.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@NamedQueries({@NamedQuery(name = Meal.GET_ALL, query = "SELECT m FROM Meal m WHERE m.restaurant.id=:restaurantId")})
+
 @Entity
 @Table(name = "meal")
 public class Meal extends AbstractBaseEntity {
+    public static final String GET_ALL = "Meals.getAll";
 
     @Column(name = "price")
     private Integer price;
