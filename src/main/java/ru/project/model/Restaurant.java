@@ -21,7 +21,7 @@ public class Restaurant extends AbstractNamedEntity {
     private User admin;
 
     @OneToMany(mappedBy = "restaurant")
-    public List<Meal> meals;
+    private List<Meal> meals;
 
     public Restaurant() {
     }

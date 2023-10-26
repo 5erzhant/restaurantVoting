@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS voting_history;
 DROP TABLE IF EXISTS user_role;
 DROP TABLE IF EXISTS meal;
 DROP TABLE IF EXISTS restaurant;
@@ -42,3 +43,16 @@ CREATE TABLE user_role
     CONSTRAINT user_roles_idx UNIQUE (user_id, role),
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
+CREATE TABLE voting_history
+(
+    id            INTEGER PRIMARY KEY,
+    day           DATE    NOT NULL,
+    user_id       INTEGER NOT NULL,
+    restaurant_id INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE,
+    CONSTRAINT user_day_idx UNIQUE (user_id, day)
+
+);
+CREATE INDEX user_date_uniq_idx ON voting_history (user_id, day)
