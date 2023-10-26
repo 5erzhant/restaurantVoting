@@ -4,9 +4,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.StringUtils;
 import ru.project.model.Meal;
 import ru.project.model.Restaurant;
-import ru.project.util.MealsUtil;
+import ru.project.util.Util;
 import ru.project.web.meal.MealController;
 import ru.project.web.restaurant.RestaurantController;
+import ru.project.web.votingHistory.VotingHistoryController;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,12 +21,14 @@ public class RestaurantServlet extends HttpServlet {
     private ConfigurableApplicationContext springContext;
     private RestaurantController restaurantController;
     private MealController mealController;
+    private VotingHistoryController votingHistoryController;
 
     @Override
     public void init() {
         springContext = SpringContext.getContext();
         restaurantController = springContext.getBean(RestaurantController.class);
         mealController = springContext.getBean(MealController.class);
+        votingHistoryController = springContext.getBean(VotingHistoryController.class);
     }
 
     @Override
@@ -44,10 +47,10 @@ public class RestaurantServlet extends HttpServlet {
                     restaurant = new Restaurant();
                 } else {
                     restaurant = restaurantController.get(getId(request));
-                    request.setAttribute("currentMeals", MealsUtil.getFilteredMeals(mealController
+                    request.setAttribute("currentMeals", Util.getFilteredMeals(mealController
                                     .getAll(restaurant.getId()),
                             Meal::isCurrent));
-                    request.setAttribute("otherMeals", MealsUtil.getFilteredMeals(mealController
+                    request.setAttribute("otherMeals", Util.getFilteredMeals(mealController
                                     .getAll(restaurant.getId()),
                             meal -> !meal.isCurrent()));
                 }
@@ -60,10 +63,15 @@ public class RestaurantServlet extends HttpServlet {
             }
             case "all" -> {
                 request.setAttribute("restaurants", restaurantController.getAll());
-                request.getRequestDispatcher("restaurant/restaurantsVoting.jsp").forward(request,response);
+                request.getRequestDispatcher("restaurant/restaurantsVoting.jsp").forward(request, response);
             }
             case "vote" -> {
-
+                int restaurantId = Integer.parseInt(request.getParameter("id"));
+                if (Util.isTooLate()) {
+                    request.getRequestDispatcher("restaurant/tooLatePage.jsp").forward(request, response);
+                }
+                votingHistoryController.vote(restaurantId);
+                response.sendRedirect("users");
             }
         }
     }
@@ -80,7 +88,7 @@ public class RestaurantServlet extends HttpServlet {
             restaurant = restaurantController.create(new Restaurant(request.getParameter("name")));
         } else {
             restaurant = restaurantController.get(Integer.parseInt(restaurantId));
-            for (Meal meal : MealsUtil.getFilteredMeals(mealController.getAll(restaurant.getId()), Meal::isCurrent)) {
+            for (Meal meal : Util.getFilteredMeals(mealController.getAll(restaurant.getId()), Meal::isCurrent)) {
                 String mealId = request.getParameter("mealId" + "_" + meal.getId());
                 String description = request.getParameter("description" + "_" + mealId);
                 String price = request.getParameter("price" + "_" + mealId);
