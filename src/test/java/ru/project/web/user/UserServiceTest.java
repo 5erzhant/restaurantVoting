@@ -3,13 +3,16 @@ package ru.project.web.user;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.project.model.User;
 import ru.project.service.UserService;
+import ru.project.util.exception.NotFoundException;
 
+import static org.junit.Assert.assertThrows;
 import static ru.project.web.user.UserTestData.*;
 
 @ContextConfiguration({"classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml"})
@@ -27,6 +30,7 @@ public class UserServiceTest {
         User newUser = getNew();
         newUser.setId(id);
         USER_MATCHER.assertMatch(created, newUser);
+        USER_MATCHER.assertMatch(userService.get(id), newUser);
     }
 
     @Test
@@ -37,6 +41,8 @@ public class UserServiceTest {
 
     @Test
     public void delete() {
+        userService.delete(USER_ID);
+        assertThrows(NotFoundException.class, () -> userService.get(USER_ID));
     }
 
     @Test
@@ -44,5 +50,21 @@ public class UserServiceTest {
         User updated = getUpdated();
         userService.update(updated);
         USER_MATCHER.assertMatch(userService.get(USER_ID), getUpdated());
+    }
+
+    @Test
+    public void duplicateMailCreate() {
+        assertThrows(DataAccessException.class, () ->
+                userService.create(new User(null, "Duplicate", "user@mail.ru", "newPass")));
+    }
+
+    @Test
+    public void deletedNotFound() {
+        assertThrows(NotFoundException.class, () -> userService.delete(NOT_FOUND));
+    }
+
+    @Test
+    public void getNotFound() {
+        assertThrows(NotFoundException.class, () -> userService.get(NOT_FOUND));
     }
 }
