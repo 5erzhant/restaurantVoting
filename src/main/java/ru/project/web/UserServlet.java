@@ -74,7 +74,7 @@ public class UserServlet extends HttpServlet {
             if (StringUtils.hasLength(id)) {
                 user.setId(Integer.valueOf(id));
                 user.setRegistered(getDate(request.getParameter("registered")));
-                userController.update(user);
+                userController.update(user, Integer.parseInt(id));
             } else {
                 SecurityUtil.setAuthUserId(userController.create(user).getId());
             }

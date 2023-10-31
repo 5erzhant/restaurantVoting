@@ -8,20 +8,21 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.project.model.User;
+import ru.project.service.UserService;
 
 import static ru.project.web.user.UserTestData.*;
 
 @ContextConfiguration({"classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml"})
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-public class UserControllerTest {
+public class UserServiceTest {
 
     @Autowired
-    private UserController userController;
+    private UserService userService;
 
     @Test
     public void create() {
-        User created = userController.create(getNew());
+        User created = userService.create(getNew());
         int id = created.getId();
         User newUser = getNew();
         newUser.setId(id);
@@ -30,7 +31,7 @@ public class UserControllerTest {
 
     @Test
     public void get() {
-        User newUser = userController.get(USER_ID);
+        User newUser = userService.get(USER_ID);
         USER_MATCHER.assertMatch(newUser, user);
     }
 
@@ -41,7 +42,7 @@ public class UserControllerTest {
     @Test
     public void update() {
         User updated = getUpdated();
-        userController.update(updated);
-        USER_MATCHER.assertMatch(userController.get(USER_ID), getUpdated());
+        userService.update(updated);
+        USER_MATCHER.assertMatch(userService.get(USER_ID), getUpdated());
     }
 }
