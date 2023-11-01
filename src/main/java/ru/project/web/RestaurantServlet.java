@@ -87,7 +87,7 @@ public class RestaurantServlet extends HttpServlet {
         if (!StringUtils.hasLength(restaurantId)) {
             restaurant = restaurantController.create(new Restaurant(request.getParameter("name")));
         } else {
-            restaurant = restaurantController.get(Integer.parseInt(restaurantId));
+            restaurant = restaurantController.get(getId(request));
             for (Meal meal : Util.getFilteredMeals(mealController.getAll(restaurant.getId()), Meal::isCurrent)) {
                 String mealId = request.getParameter("mealId" + "_" + meal.getId());
                 String description = request.getParameter("description" + "_" + mealId);
@@ -98,18 +98,18 @@ public class RestaurantServlet extends HttpServlet {
                 if (StringUtils.hasLength(check)) {
                     meal.setCurrent(false);
                 }
-                mealController.update(meal, Integer.parseInt(restaurantId));
+                mealController.update(meal, getId(request));
             }
-            restaurantController.update(restaurant);
+            restaurantController.update(restaurant, getId(request));
         }
         if (StringUtils.hasLength(newDescription) & StringUtils.hasLength(newPrice)) {
             Meal meal = new Meal(newDescription, Integer.valueOf(newPrice));
             mealController.create(meal, restaurant.getId());
         }
         if (StringUtils.hasLength(otherMeal)) {
-            Meal meal = mealController.get(Integer.parseInt(otherMeal), Integer.parseInt(restaurantId));
+            Meal meal = mealController.get(Integer.parseInt(otherMeal), getId(request));
             meal.setCurrent(true);
-            mealController.update(meal, Integer.parseInt(restaurantId));
+            mealController.update(meal, getId(request));
         }
         response.sendRedirect("users");
     }

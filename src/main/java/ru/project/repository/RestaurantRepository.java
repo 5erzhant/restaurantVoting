@@ -13,5 +13,5 @@ public interface RestaurantRepository {
 
     List<Restaurant> getAll();
 
-    Restaurant get(int authUserId, int id);
+    Restaurant get(int id, int userId);
 }

@@ -5,48 +5,58 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.project.model.Restaurant;
-import ru.project.repository.RestaurantRepository;
+import ru.project.service.RestaurantService;
 import ru.project.web.SecurityUtil;
 
 import java.util.List;
 
+import static ru.project.util.ValidationUtil.assureIdConsistent;
+import static ru.project.util.ValidationUtil.checkNew;
+
 @Controller
 public class RestaurantController {
     private static final Logger log = LoggerFactory.getLogger(Restaurant.class);
-    private final RestaurantRepository repository;
+    private final RestaurantService service;
 
     @Autowired
-    public RestaurantController(RestaurantRepository repository) {
-        this.repository = repository;
+    public RestaurantController(RestaurantService service) {
+        this.service = service;
     }
 
     public Restaurant create(Restaurant restaurant) {
-        log.info("create restaurant {}", restaurant);
-        return repository.save(restaurant, SecurityUtil.authUserId());
+        int userId = SecurityUtil.authUserId();
+        checkNew(restaurant);
+        log.info("create restaurant {} for user {}", restaurant, userId);
+        return service.create(restaurant, userId);
     }
 
-    public void update(Restaurant restaurant) {
-        log.info("update restaurant {}", restaurant);
-        repository.save(restaurant, SecurityUtil.authUserId());
+    public void update(Restaurant restaurant, int id) {
+        int userId = SecurityUtil.authUserId();
+        assureIdConsistent(restaurant, id);
+        log.info("update restaurant {} for user {}", restaurant, userId);
+        service.update(restaurant, userId);
     }
 
     public Restaurant get(int id) {
-        log.info("get restaurant {}", id);
-        return repository.get(SecurityUtil.authUserId(), id);
+        int userId = SecurityUtil.authUserId();
+        log.info("get restaurant {} for user {}", id, userId);
+        return service.get(id, userId);
     }
 
     public void delete(int id) {
-        log.info("delete restaurant {}", id);
-        repository.delete(SecurityUtil.authUserId(), id);
+        int userId = SecurityUtil.authUserId();
+        log.info("delete restaurant {} for user {}", id, userId);
+        service.delete(id, userId);
     }
 
     public List<Restaurant> getAll() {
         log.info("get all restaurants");
-        return repository.getAll();
+        return service.getAll();
     }
 
-    public List<Restaurant> getRestaurants(int userId) {
-        log.info("get user's {} restaurants", userId);
-        return repository.getRestaurants(userId);
+    public List<Restaurant> getRestaurants() {
+        int userId = SecurityUtil.authUserId();
+        log.info("get restaurants for user {}", userId);
+        return service.getRestaurants(userId);
     }
 }

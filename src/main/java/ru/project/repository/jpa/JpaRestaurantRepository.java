@@ -24,19 +24,22 @@ public class JpaRestaurantRepository implements RestaurantRepository {
         if (restaurant.isNew()) {
             em.persist(restaurant);
             return restaurant;
-        } else return em.merge(restaurant);
+        }
+        return get(restaurant.id(), userId) == null ? null : em.merge(restaurant);
     }
 
     @Override
-    public Restaurant get(int authUserId, int id) {
-        return em.find(Restaurant.class, id);
+    public Restaurant get(int id, int userId) {
+        Restaurant restaurant = em.find(Restaurant.class, id);
+        return restaurant != null && restaurant.getAdmin().getId() == userId ? restaurant : null;
     }
 
     @Override
     @Transactional
-    public boolean delete(int adminId, int id) {
-        return em.createNamedQuery(Restaurant.DELETE).setParameter("id", id)
-                .setParameter("adminId", adminId)
+    public boolean delete(int id, int userId) {
+        return em.createNamedQuery(Restaurant.DELETE)
+                .setParameter("id", id)
+                .setParameter("adminId", userId)
                 .executeUpdate() != 0;
     }
 

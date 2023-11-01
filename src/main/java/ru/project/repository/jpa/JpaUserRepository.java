@@ -21,7 +21,8 @@ public class JpaUserRepository implements UserRepository {
         if (user.isNew()) {
             em.persist(user);
             return user;
-        } else return em.merge(user);
+        }
+        return get(user.id()) == null ? null : em.merge(user);
     }
 
     @Override

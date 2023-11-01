@@ -50,7 +50,7 @@ public class UserServlet extends HttpServlet {
             default -> {
                 user = userController.get(SecurityUtil.authUserId());
                 request.setAttribute("user", user);
-                request.setAttribute("restaurants", restaurantController.getRestaurants(SecurityUtil.authUserId()));
+                request.setAttribute("restaurants", restaurantController.getRestaurants());
                 request.getRequestDispatcher("/user/userPage.jsp").forward(request, response);
             }
         }
@@ -79,7 +79,7 @@ public class UserServlet extends HttpServlet {
                 SecurityUtil.setAuthUserId(userController.create(user).getId());
             }
         }
-        request.setAttribute("restaurants", restaurantController.getRestaurants(SecurityUtil.authUserId()));
+        request.setAttribute("restaurants", restaurantController.getRestaurants());
         request.setAttribute("user", user);
         request.getRequestDispatcher("/user/userPage.jsp").forward(request, response);
     }
