@@ -98,7 +98,7 @@ public class RestaurantServlet extends HttpServlet {
                 if (StringUtils.hasLength(check)) {
                     meal.setCurrent(false);
                 }
-                mealController.update(meal, getId(request));
+                mealController.update(meal, meal.id(), getId(request));
             }
             restaurantController.update(restaurant, getId(request));
         }
@@ -109,7 +109,7 @@ public class RestaurantServlet extends HttpServlet {
         if (StringUtils.hasLength(otherMeal)) {
             Meal meal = mealController.get(Integer.parseInt(otherMeal), getId(request));
             meal.setCurrent(true);
-            mealController.update(meal, getId(request));
+            mealController.update(meal, Integer.parseInt(otherMeal), getId(request));
         }
         response.sendRedirect("users");
     }
