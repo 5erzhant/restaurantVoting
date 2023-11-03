@@ -9,7 +9,7 @@ public interface RestaurantRepository {
 
     boolean delete(int id, int restaurantId);
 
-    List<Restaurant> getRestaurants(int userId);
+    List<Restaurant> getUserRestaurants(int userId);
 
     List<Restaurant> getAll();
 

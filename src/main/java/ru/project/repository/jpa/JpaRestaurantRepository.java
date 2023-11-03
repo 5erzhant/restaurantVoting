@@ -44,8 +44,8 @@ public class JpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-    public List<Restaurant> getRestaurants(int userId) {
-        return em.createNamedQuery(Restaurant.USERS_RESTAURANTS, Restaurant.class)
+    public List<Restaurant> getUserRestaurants(int userId) {
+        return em.createNamedQuery(Restaurant.USER_RESTAURANTS, Restaurant.class)
                 .setParameter("adminId", userId)
                 .getResultList();
     }

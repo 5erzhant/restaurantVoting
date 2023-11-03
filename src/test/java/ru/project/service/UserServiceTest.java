@@ -1,4 +1,4 @@
-package ru.project.web.user;
+package ru.project.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,11 +9,10 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.project.model.User;
-import ru.project.service.UserService;
 import ru.project.util.exception.NotFoundException;
 
 import static org.junit.Assert.assertThrows;
-import static ru.project.web.user.UserTestData.*;
+import static ru.project.UserTestData.*;
 
 @ContextConfiguration({"classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml"})
 @RunWith(SpringRunner.class)
@@ -21,50 +20,50 @@ import static ru.project.web.user.UserTestData.*;
 public class UserServiceTest {
 
     @Autowired
-    private UserService userService;
+    private UserService service;
 
     @Test
     public void create() {
-        User created = userService.create(getNew());
+        User created = service.create(getNew());
         int id = created.getId();
         User newUser = getNew();
         newUser.setId(id);
         USER_MATCHER.assertMatch(created, newUser);
-        USER_MATCHER.assertMatch(userService.get(id), newUser);
+        USER_MATCHER.assertMatch(service.get(id), newUser);
     }
 
     @Test
     public void get() {
-        User newUser = userService.get(USER_ID);
+        User newUser = service.get(USER_ID);
         USER_MATCHER.assertMatch(newUser, user);
     }
 
     @Test
     public void delete() {
-        userService.delete(USER_ID);
-        assertThrows(NotFoundException.class, () -> userService.get(USER_ID));
+        service.delete(USER_ID);
+        assertThrows(NotFoundException.class, () -> service.get(USER_ID));
     }
 
     @Test
     public void update() {
         User updated = getUpdated();
-        userService.update(updated);
-        USER_MATCHER.assertMatch(userService.get(USER_ID), getUpdated());
+        service.update(updated);
+        USER_MATCHER.assertMatch(service.get(USER_ID), getUpdated());
     }
 
     @Test
     public void duplicateMailCreate() {
         assertThrows(DataAccessException.class, () ->
-                userService.create(new User(null, "Duplicate", "user@mail.ru", "newPass")));
+                service.create(new User(null, "Duplicate", "user@mail.ru", "newPass")));
     }
 
     @Test
     public void deletedNotFound() {
-        assertThrows(NotFoundException.class, () -> userService.delete(NOT_FOUND));
+        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND));
     }
 
     @Test
     public void getNotFound() {
-        assertThrows(NotFoundException.class, () -> userService.get(NOT_FOUND));
+        assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND));
     }
 }

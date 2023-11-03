@@ -1,4 +1,4 @@
-package ru.project.web.user;
+package ru.project;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,6 +16,10 @@ public class MatcherFactory {
 
         public void assertMatch(T actual, T expected) {
             assertThat(actual).usingRecursiveComparison().ignoringFields(fieldsToIgnore).isEqualTo(expected);
+        }
+
+        public void assertMatch(Iterable<T> actual, Iterable<T> expected) {
+            assertThat(actual).usingRecursiveFieldByFieldElementComparatorIgnoringFields(fieldsToIgnore).isEqualTo(expected);
         }
     }
 }

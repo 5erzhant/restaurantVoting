@@ -1,4 +1,4 @@
-package ru.project.web.user;
+package ru.project;
 
 import ru.project.model.User;
 
