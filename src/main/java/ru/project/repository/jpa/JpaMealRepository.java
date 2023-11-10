@@ -20,8 +20,8 @@ public class JpaMealRepository implements MealRepository {
     @Override
     @Transactional
     public Meal save(Meal meal, int restaurantId) {
-        meal.setRestaurant(em.getReference(Restaurant.class, restaurantId));
         if (meal.isNew()) {
+            meal.setRestaurant(em.getReference(Restaurant.class, restaurantId));
             em.persist(meal);
             return meal;
         }
@@ -41,8 +41,8 @@ public class JpaMealRepository implements MealRepository {
     }
 
     @Override
-    public List<Meal> getAll(int restaurantId) {
-        return em.createNamedQuery(Meal.GET_ALL, Meal.class)
+    public List<Meal> getRestaurantMeals(int restaurantId) {
+        return em.createNamedQuery(Meal.RESTAURANT_MEALS, Meal.class)
                 .setParameter("restaurantId", restaurantId)
                 .getResultList();
     }

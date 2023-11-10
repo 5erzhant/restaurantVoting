@@ -3,12 +3,13 @@ package ru.project.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@NamedQueries({@NamedQuery(name = Meal.GET_ALL, query = "SELECT m FROM Meal m WHERE m.restaurant.id=:restaurantId")})
+@NamedQueries({@NamedQuery(name = Meal.RESTAURANT_MEALS, query = "SELECT m FROM Meal m " +
+        "WHERE m.restaurant.id=:restaurantId ORDER BY m.id")})
 
 @Entity
 @Table(name = "meal")
 public class Meal extends AbstractBaseEntity {
-    public static final String GET_ALL = "Meals.getAll";
+    public static final String RESTAURANT_MEALS = "Meals.getAll";
 
     @Column(name = "price")
     private Integer price;
@@ -31,6 +32,18 @@ public class Meal extends AbstractBaseEntity {
         super(null);
         this.price = price;
         this.description = description;
+    }
+
+    public Meal(int id, String description, int price) {
+        super(id);
+        this.description = description;
+        this.price = price;
+        this.restaurant = new Restaurant();
+    }
+
+    public Meal(int id, String description, int price, boolean isCurrent) {
+        this(id, description, price);
+        this.isCurrent = isCurrent;
     }
 
     public String getDescription() {

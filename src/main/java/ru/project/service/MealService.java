@@ -26,7 +26,7 @@ public class MealService {
 
     public void update(Meal meal, int restaurantId) {
         Assert.notNull(meal, "meal must not be null");
-        repository.save(meal, restaurantId);
+        checkNotFoundWithId(repository.save(meal, restaurantId), meal.id());
     }
 
     public Meal get(int id, int restaurantId) {
@@ -34,7 +34,7 @@ public class MealService {
         return repository.get(id, restaurantId);
     }
 
-    public List<Meal> getAll(int restaurantId) {
-        return repository.getAll(restaurantId);
+    public List<Meal> getRestaurantMeals(int restaurantId) {
+        return repository.getRestaurantMeals(restaurantId);
     }
 }

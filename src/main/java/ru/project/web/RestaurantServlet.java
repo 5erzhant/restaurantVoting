@@ -48,10 +48,10 @@ public class RestaurantServlet extends HttpServlet {
                 } else {
                     restaurant = restaurantController.get(getId(request));
                     request.setAttribute("currentMeals", Util.getFilteredMeals(mealController
-                                    .getAll(restaurant.getId()),
+                                    .getRestaurantMeals(restaurant.getId()),
                             Meal::isCurrent));
                     request.setAttribute("otherMeals", Util.getFilteredMeals(mealController
-                                    .getAll(restaurant.getId()),
+                                    .getRestaurantMeals(restaurant.getId()),
                             meal -> !meal.isCurrent()));
                 }
                 request.setAttribute("restaurant", restaurant);
@@ -77,7 +77,7 @@ public class RestaurantServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
         String newDescription = request.getParameter("description");
         String otherMeal = request.getParameter("otherMeal");
@@ -88,7 +88,7 @@ public class RestaurantServlet extends HttpServlet {
             restaurant = restaurantController.create(new Restaurant(request.getParameter("name")));
         } else {
             restaurant = restaurantController.get(getId(request));
-            for (Meal meal : Util.getFilteredMeals(mealController.getAll(restaurant.getId()), Meal::isCurrent)) {
+            for (Meal meal : Util.getFilteredMeals(mealController.getRestaurantMeals(restaurant.getId()), Meal::isCurrent)) {
                 String mealId = request.getParameter("mealId" + "_" + meal.getId());
                 String description = request.getParameter("description" + "_" + mealId);
                 String price = request.getParameter("price" + "_" + mealId);

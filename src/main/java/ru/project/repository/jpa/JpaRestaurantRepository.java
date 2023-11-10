@@ -20,8 +20,8 @@ public class JpaRestaurantRepository implements RestaurantRepository {
     @Override
     @Transactional
     public Restaurant save(Restaurant restaurant, int userId) {
-        restaurant.setAdmin(em.getReference(User.class, userId));
         if (restaurant.isNew()) {
+            restaurant.setAdmin(em.getReference(User.class, userId));
             em.persist(restaurant);
             return restaurant;
         }

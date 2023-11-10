@@ -40,8 +40,8 @@ public class MealController {
         return service.get(mealId, restaurantId);
     }
 
-    public List<Meal> getAll(int restaurantId) {
+    public List<Meal> getRestaurantMeals(int restaurantId) {
         log.info("get meals for restaurant {}", restaurantId);
-        return service.getAll(restaurantId);
+        return service.getRestaurantMeals(restaurantId);
     }
 }
