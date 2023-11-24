@@ -10,6 +10,8 @@ import ru.project.repository.jpa.JpaVotingHistoryRepository;
 import ru.project.web.SecurityUtil;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class VotingHistoryController {
@@ -21,8 +23,13 @@ public class VotingHistoryController {
         this.repository = repository;
     }
 
-    public VotingHistory vote(int restaurantId) {
+    public void vote(int restaurantId) {
         log.info("voting for {}", restaurantId);
-        return repository.save(new VotingHistory(SecurityUtil.authUserId(), restaurantId, LocalDate.now()));
+        repository.save(new VotingHistory(SecurityUtil.authUserId(), restaurantId, LocalDate.now()));
+    }
+
+    public Map<LocalDate, List<String>> getVotingHistory(int restaurant) {
+        log.info("voting history");
+        return repository.getVotingHistory(restaurant);
     }
 }

@@ -54,4 +54,7 @@
     <button type="submit">Сохранить</button>
     <button onclick="window.history.back()" type="button">Отменить</button>
 </form>
+<h2>
+    <a href="restaurants?action=history&id=${restaurant.id}">История голосований</a>
+</h2>
 </html>

@@ -73,6 +73,10 @@ public class RestaurantServlet extends HttpServlet {
                 votingHistoryController.vote(restaurantId);
                 response.sendRedirect("users");
             }
+            case "history" -> {
+                request.setAttribute("votingHistory", votingHistoryController.getVotingHistory(getId(request)));
+                request.getRequestDispatcher("restaurant/restaurantVotingHistory.jsp").forward(request, response);
+            }
         }
     }
 
