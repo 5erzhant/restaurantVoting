@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.project.model.User;
 import ru.project.model.VotingHistory;
-import ru.project.repository.jpa.JpaVotingHistoryRepository;
+import ru.project.repository.VotingHistoryRepository;
 import ru.project.web.SecurityUtil;
 
 import java.time.LocalDate;
@@ -16,10 +16,10 @@ import java.util.Map;
 @Controller
 public class VotingHistoryController {
     private static final Logger log = LoggerFactory.getLogger(User.class);
-    private final JpaVotingHistoryRepository repository;
+    private final VotingHistoryRepository repository;
 
     @Autowired
-    public VotingHistoryController(JpaVotingHistoryRepository repository) {
+    public VotingHistoryController(VotingHistoryRepository repository) {
         this.repository = repository;
     }
 

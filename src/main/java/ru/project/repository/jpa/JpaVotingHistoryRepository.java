@@ -3,6 +3,7 @@ package ru.project.repository.jpa;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.project.model.VotingHistory;
+import ru.project.repository.VotingHistoryRepository;
 import ru.project.web.SecurityUtil;
 
 import javax.persistence.EntityManager;
@@ -19,7 +20,7 @@ import java.util.stream.IntStream;
 
 @Repository()
 @Transactional(readOnly = true)
-public class JpaVotingHistoryRepository {
+public class JpaVotingHistoryRepository implements VotingHistoryRepository {
 
     @PersistenceContext
     EntityManager em;
