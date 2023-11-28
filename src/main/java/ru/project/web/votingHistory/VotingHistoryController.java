@@ -28,8 +28,13 @@ public class VotingHistoryController {
         repository.save(new VotingHistory(SecurityUtil.authUserId(), restaurantId, LocalDate.now()));
     }
 
-    public Map<LocalDate, List<String>> getVotingHistory(int restaurant) {
-        log.info("voting history");
-        return repository.getVotingHistory(restaurant);
+    public Map<LocalDate, List<String>> getRestaurantVotingHistory(int restaurant) {
+        log.info("restaurant voting history");
+        return repository.getRestaurantVotingHistory(restaurant);
+    }
+
+    public Map<LocalDate, String> getUserVotingHistory(int id) {
+        log.info("user voting history");
+        return repository.getUserVotingHistory(id);
     }
 }

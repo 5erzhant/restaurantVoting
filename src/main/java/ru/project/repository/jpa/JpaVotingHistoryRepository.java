@@ -43,7 +43,7 @@ public class JpaVotingHistoryRepository implements VotingHistoryRepository {
         return votingHistory;
     }
 
-    public Map<LocalDate, List<String>> getVotingHistory(int restaurantId) {
+    public Map<LocalDate, List<String>> getRestaurantVotingHistory(int restaurantId) {
         Map<LocalDate, List<Integer>> votingHistoryMap = em.createQuery("SELECT v FROM VotingHistory v WHERE restaurantId=:restaurantId",
                         VotingHistory.class)
                 .setParameter("restaurantId", restaurantId)
@@ -73,6 +73,40 @@ public class JpaVotingHistoryRepository implements VotingHistoryRepository {
                         e -> e.getValue().stream().map(nameMatchingList::get).collect(Collectors.toList())));
 
         Map<LocalDate, List<String>> treeMap = new TreeMap<>(Comparator.reverseOrder());
+        treeMap.putAll(result);
+
+        return treeMap;
+    }
+
+    @Override
+    public Map<LocalDate, String> getUserVotingHistory(int userId) {
+        Map<LocalDate, Integer> votingHistoryMap = em.createQuery("SELECT v FROM VotingHistory v WHERE v.userId=:userId " +
+                        "ORDER BY v.date DESC", VotingHistory.class)
+                .setParameter("userId", userId)
+                .getResultList()
+                .stream()
+                .collect(Collectors.toMap(VotingHistory::getDate, VotingHistory::getRestaurantId));
+
+        List<Integer> restaurantsIdList = votingHistoryMap.values()
+                .stream()
+                .distinct()
+                .sorted()
+                .toList();
+
+        List<String> namesList = em.createQuery("SELECT r.name FROM Restaurant r WHERE r.id IN :list ORDER BY r.id", String.class)
+                .setParameter("list", restaurantsIdList)
+                .getResultList();
+
+        Map<Integer, String> nameMatchingList = IntStream.range(0, restaurantsIdList.size())
+                .boxed()
+                .collect(Collectors.toMap(restaurantsIdList::get, namesList::get));
+
+        Map<LocalDate, String> result = votingHistoryMap.entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> nameMatchingList.get(e.getValue())));
+
+        Map<LocalDate, String> treeMap = new TreeMap<>(Comparator.reverseOrder());
         treeMap.putAll(result);
 
         return treeMap;

@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <html>
 <head>
     <title>Форма ресторана</title>
@@ -54,7 +54,9 @@
     <button type="submit">Сохранить</button>
     <button onclick="window.history.back()" type="button">Отменить</button>
 </form>
-<h2>
-    <a href="restaurants?action=history&id=${restaurant.id}">История голосований</a>
-</h2>
+<c:if test="${restaurant.id != null}">
+    <h2>
+        <a href="restaurants?action=history&id=${restaurant.id}">История голосований</a>
+    </h2>
+</c:if>
 </html>

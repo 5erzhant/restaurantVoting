@@ -5,6 +5,7 @@ import org.springframework.util.StringUtils;
 import ru.project.model.User;
 import ru.project.web.restaurant.RestaurantController;
 import ru.project.web.user.UserController;
+import ru.project.web.votingHistory.VotingHistoryController;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,12 +20,14 @@ public class UserServlet extends HttpServlet {
     private ConfigurableApplicationContext springContext;
     private UserController userController;
     private RestaurantController restaurantController;
+    private VotingHistoryController votingHistoryController;
 
     @Override
     public void init() {
         springContext = SpringContext.getContext();
         userController = springContext.getBean(UserController.class);
         restaurantController = springContext.getBean(RestaurantController.class);
+        votingHistoryController = springContext.getBean(VotingHistoryController.class);
     }
 
     @Override
@@ -47,11 +50,16 @@ public class UserServlet extends HttpServlet {
                 userController.delete();
                 response.sendRedirect("/");
             }
-            default -> {
+            case "profile" -> {
                 user = userController.get(SecurityUtil.authUserId());
                 request.setAttribute("user", user);
                 request.setAttribute("restaurants", restaurantController.getUserRestaurants());
                 request.getRequestDispatcher("/user/userPage.jsp").forward(request, response);
+            }
+            case "history" -> {
+                request.setAttribute("votingHistory",
+                        votingHistoryController.getUserVotingHistory(Integer.parseInt(request.getParameter("id"))));
+                request.getRequestDispatcher("user/userVotingHistory.jsp").forward(request, response);
             }
         }
     }

@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
@@ -25,5 +25,10 @@
     <button type="submit">Сохранить</button>
     <button onclick="window.history.back()" type="button">Отменить</button>
 </form>
+<c:if test="${user.id != null}">
+<h2>
+    <a href="users?action=history&id=${user.id}">История голосований</a>
+</h2>
+</c:if>
 </body>
 </html>
