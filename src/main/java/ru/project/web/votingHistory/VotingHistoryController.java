@@ -33,8 +33,8 @@ public class VotingHistoryController {
         return repository.getRestaurantVotingHistory(restaurant);
     }
 
-    public Map<LocalDate, String> getUserVotingHistory(int id) {
+    public Map<LocalDate, String> getUserVotingHistory() {
         log.info("user voting history");
-        return repository.getUserVotingHistory(id);
+        return repository.getUserVotingHistory(SecurityUtil.authUserId());
     }
 }

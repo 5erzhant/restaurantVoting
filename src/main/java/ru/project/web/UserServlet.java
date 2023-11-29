@@ -58,7 +58,7 @@ public class UserServlet extends HttpServlet {
             }
             case "history" -> {
                 request.setAttribute("votingHistory",
-                        votingHistoryController.getUserVotingHistory(Integer.parseInt(request.getParameter("id"))));
+                        votingHistoryController.getUserVotingHistory());
                 request.getRequestDispatcher("user/userVotingHistory.jsp").forward(request, response);
             }
         }
