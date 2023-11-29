@@ -12,7 +12,8 @@ public class UserTestData {
 
     public static MatcherFactory.Matcher<User> USER_MATCHER =
             MatcherFactory.usingIgnoringFieldsComparator("registered", "roles");
-    public static User user = new User(100000, "User", "user@mail.ru", "user");
+    public static User user = new User(USER_ID, "User", "user@mail.ru", "user");
+    public static User admin = new User(ADMIN_ID, "Admin", "admin@mail.ru", "admin");
 
     public static User getNew() {
         return new User(null, "New", "new@mail.ru", "password");

@@ -14,7 +14,7 @@ import ru.project.util.exception.NotFoundException;
 import static org.junit.Assert.assertThrows;
 import static ru.project.RestaurantTestData.RESTAURANT_ID;
 import static ru.project.RestaurantTestData.restaurant1;
-import static ru.project.service.MealTestData.*;
+import static ru.project.MealTestData.*;
 
 @ContextConfiguration({"classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml"})
 @RunWith(SpringRunner.class)

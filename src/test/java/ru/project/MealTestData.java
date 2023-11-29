@@ -1,6 +1,5 @@
-package ru.project.service;
+package ru.project;
 
-import ru.project.MatcherFactory;
 import ru.project.model.Meal;
 
 import java.util.List;

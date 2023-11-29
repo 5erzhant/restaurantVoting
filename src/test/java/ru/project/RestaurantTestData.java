@@ -22,7 +22,9 @@ public class RestaurantTestData {
     }
 
     public static Restaurant getUpdated() {
-        return new Restaurant(RESTAURANT_ID, "Updated restaurant");
+        Restaurant updated = new Restaurant(RESTAURANT_ID, "Updated restaurant");
+        updated.setAdmin(UserTestData.admin);
+        return updated;
     }
 
 
