@@ -28,9 +28,9 @@ public class VotingHistoryController {
         repository.save(new VotingHistory(SecurityUtil.authUserId(), restaurantId, LocalDate.now()));
     }
 
-    public Map<LocalDate, List<String>> getRestaurantVotingHistory(int restaurant) {
+    public Map<LocalDate, List<String>> getRestaurantVotingHistory(int restaurantId) {
         log.info("restaurant voting history");
-        return repository.getRestaurantVotingHistory(restaurant);
+        return repository.getRestaurantVotingHistory(restaurantId, SecurityUtil.authUserId());
     }
 
     public Map<LocalDate, String> getUserVotingHistory() {

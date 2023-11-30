@@ -10,7 +10,7 @@ public interface VotingHistoryRepository {
 
     VotingHistory save(VotingHistory votingHistory);
 
-    Map<LocalDate, List<String>> getRestaurantVotingHistory(int restaurant);
+    Map<LocalDate, List<String>> getRestaurantVotingHistory(int restaurantId, int userId);
 
-    Map<LocalDate, String> getUserVotingHistory(int id);
+    Map<LocalDate, String> getUserVotingHistory(int userId);
 }

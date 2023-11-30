@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.project.model.VotingHistory;
 import ru.project.repository.VotingHistoryRepository;
+import ru.project.util.exception.NotFoundException;
 import ru.project.web.SecurityUtil;
 
 import javax.persistence.EntityManager;
@@ -43,9 +44,17 @@ public class JpaVotingHistoryRepository implements VotingHistoryRepository {
         return votingHistory;
     }
 
-    public Map<LocalDate, List<String>> getRestaurantVotingHistory(int restaurantId) {
-        Map<LocalDate, List<Integer>> votingHistoryMap = em.createQuery("SELECT v FROM VotingHistory v WHERE restaurantId=:restaurantId",
-                        VotingHistory.class)
+    public Map<LocalDate, List<String>> getRestaurantVotingHistory(int restaurantId, int userId) {
+        if (em.createQuery("SELECT r FROM Restaurant r WHERE r.id=:restaurantId AND r.admin.id=:adminId")
+                .setParameter("adminId", userId)
+                .setParameter("restaurantId", restaurantId)
+                .getResultList()
+                .size() == 0) {
+            throw new NotFoundException("restaurant not found");
+        }
+
+        Map<LocalDate, List<Integer>> votingHistoryMap = em.createQuery("SELECT v FROM VotingHistory v WHERE " +
+                        "v.restaurantId=:restaurantId", VotingHistory.class)
                 .setParameter("restaurantId", restaurantId)
                 .getResultList()
                 .stream()
