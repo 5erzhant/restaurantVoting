@@ -9,6 +9,15 @@
         </encoder>
     </appender>
 
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>C:\\logs\restaurantVoting.log</file>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%date %-5level %logger{50}.%M:%L - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <logger name="ru.project.restaurantVoting" level="debug"/>
 
     <root level="info">
