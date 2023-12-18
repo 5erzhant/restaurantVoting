@@ -9,8 +9,9 @@ import ru.project.model.User;
 
 @Transactional(readOnly = true)
 public interface CrudUserRepository extends JpaRepository<User, Integer> {
+
     @Transactional
     @Modifying
-    @Query("DELETE FROM User u WHERE u.id=:id")
+    @Query(name = User.DELETE)
     int delete(@Param("id") int id);
 }
