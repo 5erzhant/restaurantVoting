@@ -1,25 +1,17 @@
 package ru.project.service;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.project.model.Meal;
 import ru.project.util.Util;
 import ru.project.util.exception.NotFoundException;
 
 import static org.junit.Assert.assertThrows;
+import static ru.project.MealTestData.*;
 import static ru.project.RestaurantTestData.RESTAURANT_ID;
 import static ru.project.RestaurantTestData.restaurant1;
-import static ru.project.MealTestData.*;
 
-@ContextConfiguration({"classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml"})
-@RunWith(SpringRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-public class MealServiceTest {
+public class MealServiceTest extends AbstractServiceTest {
 
     @Autowired
     private MealService service;
