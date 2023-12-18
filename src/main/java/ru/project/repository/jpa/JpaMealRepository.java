@@ -1,6 +1,5 @@
 package ru.project.repository.jpa;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.project.model.Meal;
 import ru.project.model.Restaurant;
@@ -10,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Repository
+//@Repository
 @Transactional(readOnly = true)
 public class JpaMealRepository implements MealRepository {
 
@@ -26,12 +25,6 @@ public class JpaMealRepository implements MealRepository {
             return meal;
         }
         return get(meal.id(), restaurantId) == null ? null : em.merge(meal);
-    }
-
-    @Override
-    @Transactional
-    public boolean delete(int id) {
-        return false;
     }
 
     @Override
