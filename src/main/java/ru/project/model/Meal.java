@@ -3,13 +3,9 @@ package ru.project.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@NamedQueries({@NamedQuery(name = Meal.RESTAURANT_MEALS, query = "SELECT m FROM Meal m " +
-        "WHERE m.restaurant.id=:restaurantId ORDER BY m.id")})
-
 @Entity
 @Table(name = "meal")
 public class Meal extends AbstractBaseEntity {
-    public static final String RESTAURANT_MEALS = "Meals.getAll";
 
     @Column(name = "price")
     private Integer price;

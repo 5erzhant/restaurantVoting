@@ -3,16 +3,13 @@ package ru.project.model;
 import javax.persistence.*;
 import java.util.List;
 
-@NamedQueries({
-        @NamedQuery(name = Restaurant.USER_RESTAURANTS, query = "SELECT r FROM Restaurant r WHERE r.admin.id=:adminId " +
-                "ORDER BY r.id"),
-        @NamedQuery(name = Restaurant.GET_ALL, query = "SELECT DISTINCT r FROM Restaurant r LEFT OUTER JOIN FETCH r.meals ORDER BY r.id"),
+@NamedQueries({@NamedQuery(name = Restaurant.GET_ALL, query = "SELECT DISTINCT r FROM Restaurant r LEFT OUTER JOIN " +
+        "FETCH r.meals ORDER BY r.id"),
         @NamedQuery(name = Restaurant.DELETE, query = "DELETE FROM Restaurant r WHERE r.id=:id AND r.admin.id=:adminId")})
 
 @Entity
 @Table(name = "restaurant")
 public class Restaurant extends AbstractNamedEntity {
-    public static final String USER_RESTAURANTS = "Restaurant.getUserRestaurants";
     public static final String GET_ALL = "Restaurant.getAll";
     public static final String DELETE = "Restaurant.delete";
 

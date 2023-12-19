@@ -9,7 +9,6 @@ import ru.project.model.Restaurant;
 
 import java.util.List;
 
-
 @Transactional(readOnly = true)
 public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
@@ -21,7 +20,5 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
     @Query(name = Restaurant.GET_ALL)
     List<Restaurant> getAll();
 
-    @Query(name = Restaurant.USER_RESTAURANTS)
-    List<Restaurant> getRestaurants(@Param("adminId") int id);
-
+    List<Restaurant> findDistinctByAdminId(int id);
 }
