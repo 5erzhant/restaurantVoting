@@ -10,6 +10,7 @@ import ru.project.repository.VotingHistoryRepository;
 import ru.project.web.SecurityUtil;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +29,12 @@ public class VotingHistoryController {
         repository.save(new VotingHistory(SecurityUtil.authUserId(), restaurantId, LocalDate.now()));
     }
 
-    public Map<LocalDate, List<String>> getRestaurantVotingHistory(int restaurantId) {
+    public Map<Date, List<String>> getRestaurantVotingHistory(int restaurantId) {
         log.info("restaurant voting history");
-        return repository.getRestaurantVotingHistory(restaurantId, SecurityUtil.authUserId());
+        return repository.getRestaurantVotingHistory(restaurantId);
     }
 
-    public Map<LocalDate, String> getUserVotingHistory() {
+    public Map<Date, String> getUserVotingHistory() {
         log.info("user voting history");
         return repository.getUserVotingHistory(SecurityUtil.authUserId());
     }
