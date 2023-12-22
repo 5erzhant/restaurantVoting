@@ -69,6 +69,7 @@ public class RestaurantServlet extends HttpServlet {
                 int restaurantId = Integer.parseInt(request.getParameter("id"));
                 if (Util.isTooLate()) {
                     request.getRequestDispatcher("restaurant/tooLatePage.jsp").forward(request, response);
+                    break;
                 }
                 votingHistoryController.vote(restaurantId);
                 response.sendRedirect("users");
