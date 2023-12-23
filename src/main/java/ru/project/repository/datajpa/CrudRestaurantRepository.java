@@ -14,10 +14,10 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
 
     @Transactional
     @Modifying
-    @Query(name = Restaurant.DELETE)
+    @Query("DELETE FROM Restaurant r WHERE r.id=:id AND r.admin.id=:adminId")
     int delete(@Param("id") int id, @Param("adminId") int userId);
 
-    @Query(name = Restaurant.GET_ALL)
+    @Query("SELECT DISTINCT r FROM Restaurant r LEFT OUTER JOIN FETCH r.meals ORDER BY r.id")
     List<Restaurant> getAll();
 
     List<Restaurant> findDistinctByAdminId(int id);
