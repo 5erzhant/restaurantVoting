@@ -31,11 +31,6 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-    public List<Restaurant> getUserRestaurants(int userId) {
-        return crudRestaurantRepository.findDistinctByAdminId(userId);
-    }
-
-    @Override
     public List<Restaurant> getAll() {
         return crudRestaurantRepository.getAll();
     }

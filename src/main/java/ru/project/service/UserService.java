@@ -3,8 +3,11 @@ package ru.project.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import ru.project.model.Restaurant;
 import ru.project.model.User;
 import ru.project.repository.UserRepository;
+
+import java.util.List;
 
 import static ru.project.util.ValidationUtil.checkNotFoundWithId;
 
@@ -20,6 +23,10 @@ public class UserService {
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         return repository.save(user);
+    }
+
+    public List<Restaurant> getUserRestaurants(int userId) {
+        return repository.getUserRestaurants(userId);
     }
 
     public void update(User user) {

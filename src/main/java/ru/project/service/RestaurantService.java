@@ -38,10 +38,6 @@ public class RestaurantService {
         checkNotFoundWithId(repository.delete(id, userId), id);
     }
 
-    public List<Restaurant> getUserRestaurants(int userId) {
-        return repository.getUserRestaurants(userId);
-    }
-
     public List<Restaurant> getAll() {
         return repository.getAll();
     }

@@ -3,7 +3,6 @@ package ru.project.web;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.StringUtils;
 import ru.project.model.User;
-import ru.project.web.restaurant.RestaurantController;
 import ru.project.web.user.UserController;
 import ru.project.web.votingHistory.VotingHistoryController;
 
@@ -19,14 +18,12 @@ public class UserServlet extends HttpServlet {
 
     private ConfigurableApplicationContext springContext;
     private UserController userController;
-    private RestaurantController restaurantController;
     private VotingHistoryController votingHistoryController;
 
     @Override
     public void init() {
         springContext = SpringContext.getContext();
         userController = springContext.getBean(UserController.class);
-        restaurantController = springContext.getBean(RestaurantController.class);
         votingHistoryController = springContext.getBean(VotingHistoryController.class);
     }
 
@@ -53,7 +50,7 @@ public class UserServlet extends HttpServlet {
             case "profile" -> {
                 user = userController.get(SecurityUtil.authUserId());
                 request.setAttribute("user", user);
-                request.setAttribute("restaurants", restaurantController.getUserRestaurants());
+                request.setAttribute("restaurants", userController.getUserRestaurants());
                 request.getRequestDispatcher("/user/userPage.jsp").forward(request, response);
             }
             case "history" -> {
@@ -87,7 +84,7 @@ public class UserServlet extends HttpServlet {
                 SecurityUtil.setAuthUserId(userController.create(user).getId());
             }
         }
-        request.setAttribute("restaurants", restaurantController.getUserRestaurants());
+        request.setAttribute("restaurants", userController.getUserRestaurants());
         request.setAttribute("user", user);
         request.getRequestDispatcher("/user/userPage.jsp").forward(request, response);
     }

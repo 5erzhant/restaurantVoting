@@ -1,8 +1,11 @@
 package ru.project.repository.datajpa;
 
 import org.springframework.stereotype.Repository;
+import ru.project.model.Restaurant;
 import ru.project.model.User;
 import ru.project.repository.UserRepository;
+
+import java.util.List;
 
 @Repository
 public class DataJpaUserRepository implements UserRepository {
@@ -25,5 +28,10 @@ public class DataJpaUserRepository implements UserRepository {
     @Override
     public User get(int id) {
         return crudRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Restaurant> getUserRestaurants(int userId) {
+        return crudRepository.getUsersRestaurants(userId);
     }
 }

@@ -53,10 +53,4 @@ public class RestaurantController {
         log.info("get all restaurants");
         return service.getAll();
     }
-
-    public List<Restaurant> getUserRestaurants() {
-        int userId = SecurityUtil.authUserId();
-        log.info("get restaurants for user {}", userId);
-        return service.getUserRestaurants(userId);
-    }
 }

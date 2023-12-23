@@ -19,6 +19,4 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
 
     @Query("SELECT DISTINCT r FROM Restaurant r LEFT OUTER JOIN FETCH r.meals ORDER BY r.id")
     List<Restaurant> getAll();
-
-    List<Restaurant> findDistinctByAdminId(int id);
 }

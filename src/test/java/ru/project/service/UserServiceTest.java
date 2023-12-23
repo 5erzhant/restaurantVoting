@@ -7,6 +7,8 @@ import ru.project.model.User;
 import ru.project.util.exception.NotFoundException;
 
 import static org.junit.Assert.assertThrows;
+import static ru.project.RestaurantTestData.RESTAURANT_MATCHER;
+import static ru.project.RestaurantTestData.admin1Restaurants;
 import static ru.project.UserTestData.*;
 
 public class UserServiceTest extends AbstractServiceTest {
@@ -47,6 +49,11 @@ public class UserServiceTest extends AbstractServiceTest {
     public void duplicateMailCreate() {
         assertThrows(DataAccessException.class, () ->
                 service.create(new User(null, "Duplicate", "user@mail.ru", "newPass")));
+    }
+
+    @Test
+    public void getUserRestaurants() {
+        RESTAURANT_MATCHER.assertMatch(service.getUserRestaurants(ADMIN_ID), admin1Restaurants);
     }
 
     @Test
