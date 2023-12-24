@@ -3,11 +3,8 @@ package ru.project.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import ru.project.model.Restaurant;
 import ru.project.model.User;
 import ru.project.repository.UserRepository;
-
-import java.util.List;
 
 import static ru.project.util.ValidationUtil.checkNotFoundWithId;
 
@@ -25,10 +22,6 @@ public class UserService {
         return repository.save(user);
     }
 
-    public List<Restaurant> getUserRestaurants(int userId) {
-        return repository.getUserRestaurants(userId);
-    }
-
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(user), user.getId());
@@ -36,6 +29,10 @@ public class UserService {
 
     public User get(int id) {
         return checkNotFoundWithId(repository.get(id), id);
+    }
+
+    public User getWithRestaurants(int id) {
+        return checkNotFoundWithId(repository.getWithRestaurants(id), id);
     }
 
     public void delete(int id) {

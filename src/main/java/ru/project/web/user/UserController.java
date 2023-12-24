@@ -4,12 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import ru.project.model.Restaurant;
 import ru.project.model.User;
 import ru.project.service.UserService;
 import ru.project.web.SecurityUtil;
-
-import java.util.List;
 
 import static ru.project.util.ValidationUtil.assureIdConsistent;
 import static ru.project.util.ValidationUtil.checkNew;
@@ -48,9 +45,8 @@ public class UserController {
         service.update(user);
     }
 
-    public List<Restaurant> getUserRestaurants() {
-        int userId = SecurityUtil.authUserId();
-        log.info("get restaurants for user {}", userId);
-        return service.getUserRestaurants(userId);
+    public User getWithRestaurants(int id) {
+        log.info("get user {} with restaurants", id);
+        return service.getWithRestaurants(id);
     }
 }

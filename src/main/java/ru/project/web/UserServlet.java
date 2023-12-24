@@ -48,9 +48,8 @@ public class UserServlet extends HttpServlet {
                 response.sendRedirect("/");
             }
             case "profile" -> {
-                user = userController.get(SecurityUtil.authUserId());
+                user = userController.getWithRestaurants(SecurityUtil.authUserId());
                 request.setAttribute("user", user);
-                request.setAttribute("restaurants", userController.getUserRestaurants());
                 request.getRequestDispatcher("/user/userPage.jsp").forward(request, response);
             }
             case "history" -> {
@@ -70,7 +69,7 @@ public class UserServlet extends HttpServlet {
         User user;
         if (StringUtils.hasLength(userId)) {
             SecurityUtil.setAuthUserId(Integer.parseInt(userId));
-            user = userController.get(SecurityUtil.authUserId());
+            user = userController.getWithRestaurants(SecurityUtil.authUserId());
         } else {
             user = new User(
                     request.getParameter("name"),
@@ -84,7 +83,6 @@ public class UserServlet extends HttpServlet {
                 SecurityUtil.setAuthUserId(userController.create(user).getId());
             }
         }
-        request.setAttribute("restaurants", userController.getUserRestaurants());
         request.setAttribute("user", user);
         request.getRequestDispatcher("/user/userPage.jsp").forward(request, response);
     }

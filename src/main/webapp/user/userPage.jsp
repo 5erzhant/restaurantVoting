@@ -12,14 +12,13 @@
 <a href="restaurants?action=create">Создать ресторан</a><br>
 <a href="restaurants?action=all">Выбрать ресторан</a><br>
 <br/>
-<jsp:useBean id="restaurants" scope="request" type="java.util.List"/>
-<c:if test="${restaurants.size()!=0}">
+<c:if test="${user.restaurants != null && user.restaurants.size() != 0}">
     <table>
         <thead>
         <tr>Ваши рестораны</tr>
         </thead>
         <tbody>
-        <c:forEach var="restaurant" items="${restaurants}">
+        <c:forEach var="restaurant" items="${user.restaurants}">
             <jsp:useBean id="restaurant" type="ru.project.model.Restaurant"/>
             <tr>
                 <td>${restaurant.name}</td>

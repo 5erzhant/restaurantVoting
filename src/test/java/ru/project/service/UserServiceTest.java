@@ -1,8 +1,10 @@
 package ru.project.service;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import ru.project.RestaurantTestData;
 import ru.project.model.User;
 import ru.project.util.exception.NotFoundException;
 
@@ -33,6 +35,20 @@ public class UserServiceTest extends AbstractServiceTest {
     }
 
     @Test
+    public void getWithRestaurants() {
+        User newUser = service.getWithRestaurants(ADMIN_ID);
+        admin.setRestaurants(admin1Restaurants);
+        USER_MATCHER.assertMatch(newUser, admin);
+        RESTAURANT_MATCHER.assertMatch(newUser.getRestaurants(), RestaurantTestData.admin1Restaurants);
+    }
+
+    @Test
+    public void getWithRestaurantsNotFound() {
+        Assert.assertThrows(NotFoundException.class,
+                () -> service.getWithRestaurants(NOT_FOUND));
+    }
+
+    @Test
     public void delete() {
         service.delete(USER_ID);
         assertThrows(NotFoundException.class, () -> service.get(USER_ID));
@@ -49,11 +65,6 @@ public class UserServiceTest extends AbstractServiceTest {
     public void duplicateMailCreate() {
         assertThrows(DataAccessException.class, () ->
                 service.create(new User(null, "Duplicate", "user@mail.ru", "newPass")));
-    }
-
-    @Test
-    public void getUserRestaurants() {
-        RESTAURANT_MATCHER.assertMatch(service.getUserRestaurants(ADMIN_ID), admin1Restaurants);
     }
 
     @Test

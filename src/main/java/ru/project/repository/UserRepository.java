@@ -1,9 +1,6 @@
 package ru.project.repository;
 
-import ru.project.model.Restaurant;
 import ru.project.model.User;
-
-import java.util.List;
 
 public interface UserRepository {
     User save(User user);
@@ -12,5 +9,5 @@ public interface UserRepository {
 
     User get(int id);
 
-    List<Restaurant> getUserRestaurants(int userId);
+    User getWithRestaurants(int id);
 }

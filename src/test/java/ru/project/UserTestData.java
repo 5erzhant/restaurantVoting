@@ -11,7 +11,7 @@ public class UserTestData {
     public static final int NOT_FOUND = 10;
 
     public static MatcherFactory.Matcher<User> USER_MATCHER =
-            MatcherFactory.usingIgnoringFieldsComparator("registered", "roles");
+            MatcherFactory.usingIgnoringFieldsComparator("registered", "roles", "restaurants");
     public static User user = new User(USER_ID, "User", "user@mail.ru", "user");
     public static User admin = new User(ADMIN_ID, "Admin", "admin@mail.ru", "admin");
 
