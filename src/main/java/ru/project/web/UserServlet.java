@@ -1,7 +1,8 @@
 package ru.project.web;
 
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import ru.project.model.User;
 import ru.project.web.user.UserController;
 import ru.project.web.votingHistory.VotingHistoryController;
@@ -15,22 +16,15 @@ import java.io.IOException;
 import static ru.project.util.DateUtil.getDate;
 
 public class UserServlet extends HttpServlet {
-
-    private ConfigurableApplicationContext springContext;
     private UserController userController;
     private VotingHistoryController votingHistoryController;
 
     @Override
     public void init() {
-        springContext = SpringContext.getContext();
+        WebApplicationContext springContext = WebApplicationContextUtils
+                .getRequiredWebApplicationContext(getServletContext());
         userController = springContext.getBean(UserController.class);
         votingHistoryController = springContext.getBean(VotingHistoryController.class);
-    }
-
-    @Override
-    public void destroy() {
-        springContext.close();
-        super.destroy();
     }
 
     @Override

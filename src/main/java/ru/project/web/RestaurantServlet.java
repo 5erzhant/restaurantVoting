@@ -1,7 +1,8 @@
 package ru.project.web;
 
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import ru.project.model.Meal;
 import ru.project.model.Restaurant;
 import ru.project.util.Util;
@@ -18,23 +19,17 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class RestaurantServlet extends HttpServlet {
-    private ConfigurableApplicationContext springContext;
     private RestaurantController restaurantController;
     private MealController mealController;
     private VotingHistoryController votingHistoryController;
 
     @Override
     public void init() {
-        springContext = SpringContext.getContext();
+        WebApplicationContext springContext = WebApplicationContextUtils
+                .getRequiredWebApplicationContext(getServletContext());
         restaurantController = springContext.getBean(RestaurantController.class);
         mealController = springContext.getBean(MealController.class);
         votingHistoryController = springContext.getBean(VotingHistoryController.class);
-    }
-
-    @Override
-    public void destroy() {
-        springContext.close();
-        super.destroy();
     }
 
     @Override
