@@ -19,6 +19,7 @@
     </appender>
 
     <logger name="ru.project.restaurantVoting" level="debug"/>
+    <logger name="org.springframework.web.servlet" level="debug"/>
 
     <root level="info">
         <appender-ref ref="file"/>

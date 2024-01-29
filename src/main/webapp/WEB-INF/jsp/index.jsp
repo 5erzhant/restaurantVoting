@@ -5,14 +5,14 @@
 </head>
 <body>
 
-<form method="post" action="users">
-    <select name="userId">
+<form method="post" action="set">
+    <select name="id">
         <option value="100000">User</option>
         <option value="100001">Admin</option>
     </select>
     <button type="submit">Авторизоваться</button>
 </form>
 
-<a href="users?action=create">Зарегистрироваться</a>
+<a href="new">Зарегистрироваться</a>
 </body>
 </html>

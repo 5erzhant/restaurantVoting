@@ -1,52 +1,64 @@
 package ru.project.web.user;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.project.model.User;
-import ru.project.service.UserService;
 import ru.project.web.SecurityUtil;
 
-import static ru.project.util.ValidationUtil.assureIdConsistent;
-import static ru.project.util.ValidationUtil.checkNew;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 @Controller
-public class UserController {
+@RequestMapping("/users")
+public class UserController extends AbstractUserController {
 
-    private static final Logger log = LoggerFactory.getLogger(User.class);
-    private final UserService service;
-
-    @Autowired
-    public UserController(UserService service) {
-        this.service = service;
+    @GetMapping("/")
+    public String root() {
+        return "index";
     }
 
-    public User create(User user) {
-        log.info("create user {}", user);
-        checkNew(user);
-        return service.create(user);
+    @GetMapping("/new")
+    public String create(Model model) {
+        model.addAttribute("user", new User());
+        return "user/userForm";
     }
 
-    public User get(int id) {
-        log.info("get user {}", id);
-        return service.get(id);
+    @GetMapping("/update")
+    public String update(HttpServletRequest request, Model model) {
+        model.addAttribute("user", super.get(getId(request)));
+        return "userForm";
     }
 
-    public void delete() {
-        int id = SecurityUtil.authUserId();
-        log.info("delete user {}", id);
-        service.delete(id);
+    @PostMapping("/set")
+    public String setUser(HttpServletRequest request) {
+        int userId = getId(request);
+        SecurityUtil.setAuthUserId(userId);
+        return "redirect:profile";
     }
 
-    public void update(User user, int id) {
-        log.info("update user {} with id {}", user, id);
-        assureIdConsistent(user, id);
-        service.update(user);
+    @GetMapping("/profile")
+    public String getUser(Model model) {
+        model.addAttribute("user", super.getWithRestaurants(SecurityUtil.authUserId()));
+        return "user/userPage";
     }
 
-    public User getWithRestaurants(int id) {
-        log.info("get user {} with restaurants", id);
-        return service.getWithRestaurants(id);
+    @PostMapping
+    public String createOrUpdateUser(HttpServletRequest request) {
+        User user = new User(request.getParameter("name"), request.getParameter("email"),
+                request.getParameter("password"));
+        if (request.getParameter("id").isEmpty()) {
+            super.create(user);
+        } else {
+            super.update(user, getId(request));
+        }
+        return "redirect:users/profile";
+    }
+
+    private int getId(HttpServletRequest request) {
+        String paramId = Objects.requireNonNull(request.getParameter("id"));
+        return Integer.parseInt(paramId);
     }
 }

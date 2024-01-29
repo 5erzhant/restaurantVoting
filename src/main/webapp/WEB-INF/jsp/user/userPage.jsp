@@ -7,8 +7,8 @@
 <body>
 <jsp:useBean id="user" type="ru.project.model.User" scope="request"/>
 <h2>Здравствуйте, ${user.name}</h2>
-<a href="users?action=update">Редактировать профиль</a><br>
-<a href="users?action=delete">Удалить профиль</a><br>
+<a href="update">Редактировать профиль</a><br>
+<a href="delete">Удалить профиль</a><br>
 <a href="restaurants?action=create">Создать ресторан</a><br>
 <a href="restaurants?action=all">Выбрать ресторан</a><br>
 <br/>

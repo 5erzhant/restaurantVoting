@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>Регистрация</title>
+    <base href="${pageContext.request.contextPath}/"/>
 </head>
 <body>
 <jsp:useBean id="user" type="ru.project.model.User" scope="request"/>
