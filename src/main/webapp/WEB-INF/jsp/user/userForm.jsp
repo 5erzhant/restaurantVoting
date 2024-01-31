@@ -3,7 +3,7 @@
 
 <html>
 <head>
-    <title>Регистрация</title>
+    <title>Редактор</title>
     <base href="${pageContext.request.contextPath}/"/>
 </head>
 <body>

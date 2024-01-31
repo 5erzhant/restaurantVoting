@@ -27,9 +27,15 @@ public class UserController extends AbstractUserController {
     }
 
     @GetMapping("/update")
-    public String update(HttpServletRequest request, Model model) {
-        model.addAttribute("user", super.get(getId(request)));
-        return "userForm";
+    public String update(Model model) {
+        model.addAttribute("user", super.get(SecurityUtil.authUserId()));
+        return "user/userForm";
+    }
+
+    @GetMapping("/delete")
+    public String deleteUser() {
+        super.delete();
+        return "redirect:/users/";
     }
 
     @PostMapping("/set")
