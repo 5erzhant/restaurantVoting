@@ -10,7 +10,7 @@
 <a href="update">Редактировать профиль</a><br>
 <a href="delete">Удалить профиль</a><br>
 <a href="restaurant/new">Создать ресторан</a><br>
-<a href="restaurants?action=all">Выбрать ресторан</a><br>
+<a href="restaurant/all">Выбрать ресторан</a><br>
 <br/>
 <c:if test="${user.restaurants != null && user.restaurants.size() != 0}">
     <table>
@@ -22,8 +22,8 @@
             <jsp:useBean id="restaurant" type="ru.project.model.Restaurant"/>
             <tr>
                 <td>${restaurant.name}</td>
-                <td><a href="restaurants?action=update&id=${restaurant.id}">Редактировать</a></td>
-                <td><a href="restaurants?action=delete&id=${restaurant.id}">Удалить</a></td>
+                <td><a href="restaurant/update/${restaurant.id}">Редактировать</a></td>
+                <td><a href="restaurant/delete/${restaurant.id}">Удалить</a></td>
             </tr>
         </c:forEach>
         </tbody>
