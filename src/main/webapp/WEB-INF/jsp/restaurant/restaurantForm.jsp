@@ -3,9 +3,10 @@
 <html>
 <head>
     <title>Форма ресторана</title>
+    <base href="${pageContext.request.contextPath}/"/>
 </head>
 <jsp:useBean id="restaurant" type="ru.project.model.Restaurant" scope="request"/>
-<form method="post" action="restaurants">
+<form method="post" action="user/restaurant">
     <input type="hidden" name="id" value="${restaurant.id}">
     <dl>
         <dt>Название</dt>

@@ -9,7 +9,7 @@
 <h2>Здравствуйте, ${user.name}</h2>
 <a href="update">Редактировать профиль</a><br>
 <a href="delete">Удалить профиль</a><br>
-<a href="restaurants?action=create">Создать ресторан</a><br>
+<a href="restaurant/new">Создать ресторан</a><br>
 <a href="restaurants?action=all">Выбрать ресторан</a><br>
 <br/>
 <c:if test="${user.restaurants != null && user.restaurants.size() != 0}">

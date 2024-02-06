@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController extends AbstractUserController {
 
-    @GetMapping("/")
+    @GetMapping
     public String root() {
         return "index";
     }
@@ -35,7 +35,7 @@ public class UserController extends AbstractUserController {
     @GetMapping("/delete")
     public String deleteUser() {
         super.delete();
-        return "redirect:/users/";
+        return "redirect:/user";
     }
 
     @PostMapping("/set")
@@ -60,7 +60,7 @@ public class UserController extends AbstractUserController {
         } else {
             super.update(user, getId(request));
         }
-        return "redirect:users/profile";
+        return "redirect:user/profile";
     }
 
     private int getId(HttpServletRequest request) {

@@ -1,56 +1,38 @@
 package ru.project.web.restaurant;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.project.model.Restaurant;
-import ru.project.service.RestaurantService;
-import ru.project.web.SecurityUtil;
 
-import java.util.List;
-
-import static ru.project.util.ValidationUtil.assureIdConsistent;
-import static ru.project.util.ValidationUtil.checkNew;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 @Controller
-public class RestaurantController {
-    private static final Logger log = LoggerFactory.getLogger(Restaurant.class);
-    private final RestaurantService service;
+@RequestMapping("user/restaurant")
+public class RestaurantController extends AbstractRestaurantController {
 
-    @Autowired
-    public RestaurantController(RestaurantService service) {
-        this.service = service;
+    @GetMapping("/new")
+    public String create(Model model) {
+        model.addAttribute("restaurant", new Restaurant());
+        return "restaurant/restaurantForm";
     }
 
-    public Restaurant create(Restaurant restaurant) {
-        int userId = SecurityUtil.authUserId();
-        checkNew(restaurant);
-        log.info("create restaurant {} for user {}", restaurant, userId);
-        return service.create(restaurant, userId);
+    @PostMapping
+    public String createOrUpdateRestaurant(HttpServletRequest request) {
+        Restaurant restaurant = new Restaurant(request.getParameter("name"));
+        if (request.getParameter("id").isEmpty()) {
+            super.create(restaurant);
+        } else {
+            super.update(restaurant, getId(request));
+        }
+        return "redirect:profile";
     }
 
-    public void update(Restaurant restaurant, int id) {
-        int userId = SecurityUtil.authUserId();
-        assureIdConsistent(restaurant, id);
-        log.info("update restaurant {} for user {}", restaurant, userId);
-        service.update(restaurant, userId);
-    }
-
-    public Restaurant get(int id) {
-        int userId = SecurityUtil.authUserId();
-        log.info("get restaurant {} for user {}", id, userId);
-        return service.get(id, userId);
-    }
-
-    public void delete(int id) {
-        int userId = SecurityUtil.authUserId();
-        log.info("delete restaurant {} for user {}", id, userId);
-        service.delete(id, userId);
-    }
-
-    public List<Restaurant> getAll() {
-        log.info("get all restaurants");
-        return service.getAll();
+    private int getId(HttpServletRequest request) {
+        String paramId = Objects.requireNonNull(request.getParameter("id"));
+        return Integer.parseInt(paramId);
     }
 }

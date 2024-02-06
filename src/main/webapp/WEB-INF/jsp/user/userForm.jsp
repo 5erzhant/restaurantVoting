@@ -8,7 +8,7 @@
 </head>
 <body>
 <jsp:useBean id="user" type="ru.project.model.User" scope="request"/>
-<form method="post" action="users">
+<form method="post" action="user">
     <input type="hidden" name="id" value="${user.id}">
     <input type="hidden" name="registered" value="${user.registered}">
     <dl>
