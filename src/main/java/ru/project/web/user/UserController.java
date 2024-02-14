@@ -1,5 +1,6 @@
 package ru.project.web.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.project.model.User;
 import ru.project.web.SecurityUtil;
+import ru.project.web.votingHistory.VotingHistoryController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
@@ -14,6 +16,9 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/user")
 public class UserController extends AbstractUserController {
+
+    @Autowired
+    private VotingHistoryController votingHistoryController;
 
     @GetMapping
     public String root() {
@@ -49,6 +54,12 @@ public class UserController extends AbstractUserController {
     public String getUser(Model model) {
         model.addAttribute("user", super.getWithRestaurants(SecurityUtil.authUserId()));
         return "user/userPage";
+    }
+
+    @GetMapping("/history")
+    public String getHistory(Model model) {
+        model.addAttribute("votingHistory", votingHistoryController.getUserVotingHistory());
+        return "user/userVotingHistory";
     }
 
     @PostMapping

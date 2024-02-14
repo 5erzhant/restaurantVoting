@@ -28,7 +28,7 @@
 </form>
 <c:if test="${user.id != null}">
 <h2>
-    <a href="users?action=history">История голосований</a>
+    <a href="user/history">История голосований</a>
 </h2>
 </c:if>
 </body>
