@@ -57,7 +57,7 @@
 </form>
 <c:if test="${restaurant.id != null}">
     <h2>
-        <a href="restaurants?action=history&id=${restaurant.id}">История голосований</a>
+        <a href="/user/restaurant/history/${restaurant.id}">История голосований</a>
     </h2>
 </c:if>
 </html>

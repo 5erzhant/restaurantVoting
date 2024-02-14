@@ -32,7 +32,7 @@
                 </select>
             </td>
             <td>
-                <a href="restaurants?action=vote&id=${restaurant.id}">голосовать</a>
+                <a href="/user/restaurant/vote/${restaurant.id}">голосовать</a>
             </td>
         </tr>
     </c:forEach>

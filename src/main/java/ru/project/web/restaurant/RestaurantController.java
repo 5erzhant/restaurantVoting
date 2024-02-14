@@ -12,6 +12,7 @@ import ru.project.model.Meal;
 import ru.project.model.Restaurant;
 import ru.project.util.Util;
 import ru.project.web.meal.MealController;
+import ru.project.web.votingHistory.VotingHistoryController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
@@ -23,6 +24,9 @@ public class RestaurantController extends AbstractRestaurantController {
 
     @Autowired
     private MealController mealController;
+
+    @Autowired
+    private VotingHistoryController votingHistoryController;
 
     @GetMapping("/new")
     public String create(Model model) {
@@ -89,6 +93,21 @@ public class RestaurantController extends AbstractRestaurantController {
     @GetMapping("/delete/{restaurantId}")
     public String deleteRestaurant(@PathVariable int restaurantId) {
         super.delete(restaurantId);
+        return "redirect:/user/profile";
+    }
+
+    @GetMapping("/history/{restaurantId}")
+    public String getHistory(Model model, @PathVariable int restaurantId) {
+        model.addAttribute("votingHistory", votingHistoryController.getRestaurantVotingHistory(restaurantId));
+        return "restaurant/restaurantVotingHistory";
+    }
+
+    @GetMapping("/vote/{restaurantId}")
+    public String vote(@PathVariable int restaurantId) {
+        if (Util.isTooLate()) {
+            return "restaurant/tooLatePage";
+        }
+        votingHistoryController.vote(restaurantId);
         return "redirect:/user/profile";
     }
 
