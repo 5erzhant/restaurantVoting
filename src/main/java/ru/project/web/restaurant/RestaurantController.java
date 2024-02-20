@@ -45,6 +45,7 @@ public class RestaurantController extends AbstractRestaurantController {
             restaurant = super.create(new Restaurant(request.getParameter("name")));
         } else {
             restaurant = super.get(getId(request));
+            restaurant.setName(request.getParameter("name"));
             for (Meal meal : Util.getFilteredMeals(mealController.getRestaurantMeals(restaurant.getId()), Meal::isCurrent)) {
                 String mealId = request.getParameter("mealId" + "_" + meal.getId());
                 String description = request.getParameter("description" + "_" + mealId);
