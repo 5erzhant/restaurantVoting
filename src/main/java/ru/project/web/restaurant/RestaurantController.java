@@ -39,14 +39,14 @@ public class RestaurantController extends AbstractRestaurantController {
         String newDescription = request.getParameter("description");
         String otherMeal = request.getParameter("otherMeal");
         String newPrice = request.getParameter("price");
-        String restaurantId = request.getParameter("id");
+        int restaurantId = Integer.parseInt(Objects.requireNonNull(request.getParameter("id")));
         Restaurant restaurant;
-        if (!StringUtils.hasLength(restaurantId)) {
-            restaurant = super.create(new Restaurant(request.getParameter("name")));
+        if (!StringUtils.hasLength(String.valueOf(restaurantId))) {
+            super.create(new Restaurant(request.getParameter("name")));
         } else {
-            restaurant = super.get(getId(request));
+            restaurant = super.get(restaurantId);
             restaurant.setName(request.getParameter("name"));
-            for (Meal meal : Util.getFilteredMeals(mealController.getRestaurantMeals(restaurant.getId()), Meal::isCurrent)) {
+            for (Meal meal : Util.getFilteredMeals(mealController.getRestaurantMeals(restaurantId), Meal::isCurrent)) {
                 String mealId = request.getParameter("mealId" + "_" + meal.getId());
                 String description = request.getParameter("description" + "_" + mealId);
                 String price = request.getParameter("price" + "_" + mealId);
@@ -56,18 +56,18 @@ public class RestaurantController extends AbstractRestaurantController {
                 if (StringUtils.hasLength(check)) {
                     meal.setCurrent(false);
                 }
-                mealController.update(meal, meal.id(), getId(request));
+                mealController.update(meal, meal.id(), restaurantId);
             }
-            super.update(restaurant, getId(request));
+            super.update(restaurant, restaurantId);
         }
         if (StringUtils.hasLength(newDescription) & StringUtils.hasLength(newPrice)) {
             Meal meal = new Meal(newDescription, Integer.valueOf(newPrice));
-            mealController.create(meal, restaurant.getId());
+            mealController.create(meal, restaurantId);
         }
         if (StringUtils.hasLength(otherMeal)) {
-            Meal meal = mealController.get(Integer.parseInt(otherMeal), getId(request));
+            Meal meal = mealController.get(Integer.parseInt(otherMeal), restaurantId);
             meal.setCurrent(true);
-            mealController.update(meal, Integer.parseInt(otherMeal), getId(request));
+            mealController.update(meal, Integer.parseInt(otherMeal), restaurantId);
         }
         return "redirect:profile";
     }
@@ -82,10 +82,10 @@ public class RestaurantController extends AbstractRestaurantController {
     public String update(Model model, @PathVariable int restaurantId) {
         Restaurant restaurant = super.get(restaurantId);
         model.addAttribute("currentMeals", Util.getFilteredMeals(mealController
-                        .getRestaurantMeals(restaurant.getId()),
+                        .getRestaurantMeals(restaurantId),
                 Meal::isCurrent));
         model.addAttribute("otherMeals", Util.getFilteredMeals(mealController
-                        .getRestaurantMeals(restaurant.getId()),
+                        .getRestaurantMeals(restaurantId),
                 meal -> !meal.isCurrent()));
         model.addAttribute("restaurant", restaurant);
         return "restaurant/restaurantForm";
@@ -110,10 +110,5 @@ public class RestaurantController extends AbstractRestaurantController {
         }
         votingHistoryController.vote(restaurantId);
         return "redirect:/user/profile";
-    }
-
-    private int getId(HttpServletRequest request) {
-        String paramId = Objects.requireNonNull(request.getParameter("id"));
-        return Integer.parseInt(paramId);
     }
 }
