@@ -1,14 +1,13 @@
 package ru.project.service;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import ru.project.RestaurantTestData;
 import ru.project.model.User;
 import ru.project.util.exception.NotFoundException;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.project.RestaurantTestData.RESTAURANT_MATCHER;
 import static ru.project.RestaurantTestData.admin1Restaurants;
 import static ru.project.UserTestData.*;
@@ -19,7 +18,7 @@ public class UserServiceTest extends AbstractServiceTest {
     private UserService service;
 
     @Test
-    public void create() {
+    void create() {
         User created = service.create(getNew());
         int id = created.getId();
         User newUser = getNew();
@@ -29,13 +28,13 @@ public class UserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void get() {
+    void get() {
         User newUser = service.get(USER_ID);
         USER_MATCHER.assertMatch(newUser, user);
     }
 
     @Test
-    public void getWithRestaurants() {
+    void getWithRestaurants() {
         User newUser = service.getWithRestaurants(ADMIN_ID);
         admin.setRestaurants(admin1Restaurants);
         USER_MATCHER.assertMatch(newUser, admin);
@@ -43,37 +42,37 @@ public class UserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void getWithRestaurantsNotFound() {
-        Assert.assertThrows(NotFoundException.class,
+    void getWithRestaurantsNotFound() {
+        assertThrows(NotFoundException.class,
                 () -> service.getWithRestaurants(NOT_FOUND));
     }
 
     @Test
-    public void delete() {
+    void delete() {
         service.delete(USER_ID);
         assertThrows(NotFoundException.class, () -> service.get(USER_ID));
     }
 
     @Test
-    public void update() {
+    void update() {
         User updated = getUpdated();
         service.update(updated);
         USER_MATCHER.assertMatch(service.get(USER_ID), getUpdated());
     }
 
     @Test
-    public void duplicateMailCreate() {
+    void duplicateMailCreate() {
         assertThrows(DataAccessException.class, () ->
-                service.create(new User(null, "Duplicate", "user@mail.ru", "newPass")));
+                service.create(new User(1, "Duplicate", "user@mail.ru", "newPass")));
     }
 
     @Test
-    public void deletedNotFound() {
+    void deletedNotFound() {
         assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND));
     }
 
     @Test
-    public void getNotFound() {
+    void getNotFound() {
         assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND));
     }
 }

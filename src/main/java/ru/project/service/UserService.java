@@ -18,7 +18,6 @@ public class UserService {
     }
 
     public User create(User user) {
-        Assert.notNull(user, "user must not be null");
         return repository.save(user);
     }
 

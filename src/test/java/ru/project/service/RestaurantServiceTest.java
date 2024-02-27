@@ -1,12 +1,12 @@
 package ru.project.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.project.RestaurantTestData;
 import ru.project.model.Restaurant;
 import ru.project.util.exception.NotFoundException;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.project.RestaurantTestData.*;
 import static ru.project.UserTestData.*;
 
@@ -46,33 +46,33 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void getNotFound() {
+    void getNotFound() {
         assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND, USER_ID));
     }
 
     @Test
-    public void getNotOwn() {
+    void getNotOwn() {
         assertThrows(NotFoundException.class, () -> service.get(RESTAURANT_ID, USER_ID));
     }
 
     @Test
-    public void delete() {
+    void delete() {
         service.delete(RESTAURANT_ID, ADMIN_ID);
         assertThrows(NotFoundException.class, () -> service.get(RESTAURANT_ID, ADMIN_ID));
     }
 
     @Test
-    public void deleteNotFound() {
+    void deleteNotFound() {
         assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND, ADMIN_ID));
     }
 
     @Test
-    public void deleteNotOwn() {
+    void deleteNotOwn() {
         assertThrows(NotFoundException.class, () -> service.delete(RESTAURANT_ID, USER_ID));
     }
 
     @Test
-    public void getAll() {
+    void getAll() {
         RESTAURANT_MATCHER.assertMatch(service.getAll(), restaurants);
     }
 }
